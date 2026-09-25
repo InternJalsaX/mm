@@ -1,0 +1,569 @@
+/* ==========================================================================
+   MM MOTORS — HOMEPAGE
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   01 — INTRO
+   -------------------------------------------------------------------------- */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  padding-top: 72px;
+  overflow: hidden;
+}
+
+.hero__grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(to right, var(--graphite-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--graphite-line) 1px, transparent 1px);
+  background-size: clamp(60px, 8vw, 132px) clamp(60px, 8vw, 132px);
+  opacity: 0.32;
+  mask-image: radial-gradient(85% 70% at 50% 45%, #000 20%, transparent 75%);
+  -webkit-mask-image: radial-gradient(85% 70% at 50% 45%, #000 20%, transparent 75%);
+  pointer-events: none;
+}
+
+.hero__main {
+  position: relative;
+  display: grid;
+  align-content: center;
+  gap: clamp(var(--s-5), 3vw, var(--s-7));
+  padding-block: var(--s-7) var(--s-6);
+}
+
+.hero__head { position: relative; z-index: 3; }
+
+.hero__title { position: relative; z-index: 3; }
+.hero__title .line { display: block; }
+.hero__title .line > span { display: block; }
+
+/* A masked line-reveal (overflow:hidden + translateY(105%)) only works for text
+   that is guaranteed never to wrap. This headline wraps at narrow widths, and a
+   clipped headline is a worse outcome than a simpler animation — so the reveal
+   is a short, clip-free rise instead.
+   Keyframes with `both` fill rather than a JS-toggled class, so the headline can
+   never be left hidden by a frame that did not run (background tab, paused
+   compositor, a module that failed to load). */
+.js .hero__title .line {
+  animation: hero-rise var(--t-cine) var(--e-out) both;
+}
+.js .hero__title .line:nth-child(2) { animation-delay: 110ms; }
+
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(26px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.hero__title .thin { font-weight: 300; color: var(--steel); }
+
+/* The vehicle is never placed under the headline — it gets its own plate.
+   Brand Bible §44: the vehicle is the hero, and nothing competes with it. */
+.hero__body {
+  position: relative; z-index: 3;
+  display: grid;
+  gap: var(--s-6);
+  align-items: end;
+}
+
+.hero__aside { display: grid; gap: var(--s-5); max-width: 46ch; align-content: end; }
+
+.hero__stats {
+  display: flex; gap: var(--s-6);
+  padding-top: var(--s-4);
+  border-top: var(--hair) solid var(--graphite-line);
+  margin: 0;
+}
+.hero__stat {
+  font-family: var(--ff-display);
+  font-size: 1.75rem; font-weight: 700; line-height: 1;
+  letter-spacing: -0.03em; font-variant-numeric: tabular-nums;
+  margin: 4px 0 0;
+}
+
+.hero__art { margin: 0; position: relative; }
+.hero__art .v-media { aspect-ratio: 16 / 10; }
+.hero__artcap {
+  position: absolute; left: 0; bottom: calc(var(--s-5) * -1);
+  color: var(--steel);
+}
+.js .hero__art {
+  animation: hero-art 1100ms var(--e-out) 140ms both;
+}
+@keyframes hero-art {
+  from { opacity: 0; transform: translateY(20px) scale(0.985); }
+  to   { opacity: 1; transform: none; }
+}
+
+.hero__foot {
+  position: relative; z-index: 3;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--s-5); flex-wrap: wrap;
+  padding-block: var(--s-5);
+  border-top: var(--hair) solid var(--graphite-line);
+}
+
+.scroll-cue {
+  display: inline-flex; align-items: center; gap: var(--s-3);
+  font-family: var(--ff-data); font-size: var(--fs-micro);
+  letter-spacing: var(--tr-micro); text-transform: uppercase; color: var(--steel);
+}
+.scroll-cue__bar {
+  width: 1px; height: 30px; background: var(--graphite-line);
+  position: relative; overflow: hidden;
+}
+.scroll-cue__bar::after {
+  content: ''; position: absolute; inset: 0;
+  background: var(--accent);
+  animation: cue 2.2s var(--e-inout) infinite;
+}
+@keyframes cue {
+  0%   { transform: translateY(-100%); }
+  55%  { transform: translateY(0); }
+  100% { transform: translateY(100%); }
+}
+@media (prefers-reduced-motion: reduce) { .scroll-cue__bar::after { animation: none; } }
+
+@media (min-width: 900px) {
+  .hero__body { grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); gap: var(--s-8); }
+}
+@media (max-width: 899px) {
+  .hero { min-height: 0; padding-bottom: var(--s-6); }
+  .hero__artcap { position: static; display: block; margin-top: var(--s-3); }
+}
+
+/* --------------------------------------------------------------------------
+   02 — BRANDS · the homepage's primary experience
+
+   Two brands worked as side-by-side expanding panels. Five do not: each panel
+   collapses to roughly 200px, which is narrower than the wordmark it has to
+   carry. So this is an editorial INDEX instead — full-width rows that scale to
+   any number of manufacturers, each row a link into that brand's own section.
+   -------------------------------------------------------------------------- */
+.brand-index {
+  border-top: var(--hair) solid var(--graphite-line);
+}
+
+.brand-row {
+  position: relative;
+  display: block;
+  border-bottom: var(--hair) solid var(--graphite-line);
+  padding-block: clamp(20px, 2.6vw, 36px);
+  overflow: hidden;
+  transition: background-color var(--t-base) var(--e-out);
+}
+.brand-row:hover,
+.brand-row:focus-visible { background: var(--ink-raise); }
+.brand-row:focus-visible { outline-offset: -3px; }
+
+/* The accent hairline that marks the row you are on */
+.brand-row::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: 50% 0;
+  transition: transform var(--t-base) var(--e-out);
+}
+.brand-row:hover::before,
+.brand-row:focus-visible::before { transform: scaleY(1); }
+
+.brand-row__inner {
+  position: relative;
+  z-index: 2;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  display: grid;
+  grid-template-columns: 3.5ch minmax(0, 1fr) minmax(0, 30%);
+  gap: var(--s-5);
+  align-items: center;
+}
+
+.brand-row__idx {
+  font-family: var(--ff-data);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tr-micro);
+  color: var(--accent);
+  align-self: start;
+  padding-top: 8px;
+}
+
+.brand-row__name {
+  font-family: var(--ff-display);
+  font-size: clamp(1.875rem, 4.6vw, 3.75rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: var(--tr-display);
+  text-transform: uppercase;
+  color: var(--paper);
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-4);
+  flex-wrap: wrap;
+}
+.brand-row__name .brand-row__go {
+  font-size: 0.32em;
+  color: var(--steel);
+  transition: transform var(--t-base) var(--e-out), color var(--t-fast) linear;
+}
+.brand-row:hover .brand-row__go { transform: translateX(6px); color: var(--accent); }
+
+.brand-row__statement {
+  color: var(--mist);
+  font-size: var(--fs-small);
+  max-width: 46ch;
+  margin-top: var(--s-3);
+}
+
+.brand-row__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-4);
+  margin-top: var(--s-3);
+  font-family: var(--ff-data);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tr-micro);
+  text-transform: uppercase;
+  color: var(--steel);
+}
+.brand-row__meta .accent { color: var(--accent); }
+
+.brand-row__models {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin-top: var(--s-4);
+}
+@media (min-width: 900px) {
+  .brand-row__models {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    margin-top: 0;
+    transition: max-height var(--t-slow) var(--e-inout),
+                opacity var(--t-base) var(--e-out),
+                margin-top var(--t-slow) var(--e-inout);
+  }
+  .brand-row:hover .brand-row__models,
+  .brand-row:focus-visible .brand-row__models,
+  .brand-row:focus-within .brand-row__models {
+    max-height: 120px;
+    opacity: 1;
+    margin-top: var(--s-4);
+  }
+}
+
+.brand-row__art { pointer-events: none; }
+.brand-row__art .v-media {
+  aspect-ratio: 16 / 10;
+  transform: scale(0.94);
+  transition: transform var(--t-cine) var(--e-out);
+}
+.brand-row:hover .brand-row__art .v-media,
+.brand-row:focus-visible .brand-row__art .v-media { transform: scale(1); }
+
+@media (max-width: 899px) {
+  .brand-row__inner {
+    grid-template-columns: 3.5ch minmax(0, 1fr);
+    align-items: start;
+  }
+  .brand-row__art { grid-column: 2; }
+  .brand-row__art .v-media { transform: none; }
+}
+
+/* --------------------------------------------------------------------------
+   03 — PETROL / ELECTRIC
+   -------------------------------------------------------------------------- */
+.split { display: flex; min-height: min(72vh, 720px); }
+
+.split__half {
+  position: relative;
+  flex: 1 1 0;
+  display: flex; flex-direction: column; justify-content: space-between;
+  gap: var(--s-6);
+  padding: var(--s-8) var(--s-6);
+  overflow: hidden;
+  transition: flex-grow var(--t-cine) var(--e-inout);
+  min-width: 0;
+}
+.split__half[data-world='petrol'] { background: var(--graphite); }
+.split__half[data-world='electric'] {
+  background:
+    radial-gradient(120% 100% at 100% 0%, rgba(255, 75, 18, 0.16), transparent 62%),
+    var(--ink);
+}
+
+@media (min-width: 900px) {
+  .split:hover .split__half { flex-grow: 0.85; }
+  .split__half:hover, .split__half:focus-within { flex-grow: 2; }
+}
+
+.split__label {
+  font-family: var(--ff-display);
+  font-size: clamp(2.25rem, 5.5vw, 4.5rem);
+  font-weight: 700; line-height: 0.92;
+  letter-spacing: var(--tr-display); text-transform: uppercase;
+}
+.split__half[data-world='electric'] .split__label .accent { color: var(--accent); }
+
+.split__concerns { display: grid; gap: 0; margin-top: var(--s-5); }
+.split__concerns li {
+  display: flex; align-items: baseline; gap: var(--s-4);
+  padding: var(--s-3) 0;
+  border-top: var(--hair) solid var(--graphite-line);
+  font-size: var(--fs-small);
+  color: var(--mist);
+}
+.split__concerns li .micro { flex: none; width: 2.5ch; color: var(--accent); }
+
+.split__art { pointer-events: none; opacity: 0.55; transition: opacity var(--t-cine) var(--e-out); }
+.split__half:hover .split__art { opacity: 1; }
+
+@media (max-width: 900px) {
+  .split { flex-direction: column; }
+  .split__half { padding: var(--s-7) var(--gutter); }
+}
+
+/* --------------------------------------------------------------------------
+   04 — FIND YOUR RIDE
+   -------------------------------------------------------------------------- */
+.finder { display: grid; gap: var(--s-7); }
+@media (min-width: 1000px) { .finder { grid-template-columns: 0.95fr 1.05fr; gap: var(--s-9); } }
+
+.finder__steps { display: grid; gap: var(--s-6); align-content: start; }
+
+.fstep { display: grid; gap: var(--s-4); }
+.fstep__head { display: flex; align-items: baseline; gap: var(--s-3); }
+.fstep__num {
+  font-family: var(--ff-data); font-size: var(--fs-micro);
+  letter-spacing: var(--tr-micro); color: var(--accent); flex: none;
+}
+.fstep__q { font-family: var(--ff-display); font-size: 1.125rem; font-weight: 600; letter-spacing: -0.01em; }
+.fstep__opts { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+
+.finder__result {
+  border: var(--hair) solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--raise);
+  padding: var(--s-6);
+  display: grid; gap: var(--s-5);
+  align-content: start;
+  position: sticky; top: 96px;
+}
+@media (max-width: 1000px) { .finder__result { position: static; } }
+
+.finder__empty { color: var(--fg-faint); display: grid; gap: var(--s-3); }
+
+.match { display: grid; gap: var(--s-4); }
+.match__item {
+  display: grid; grid-template-columns: 116px 1fr; gap: var(--s-4);
+  align-items: center;
+  padding: var(--s-4) 0;
+  border-top: var(--hair) solid var(--line);
+}
+.match__item:first-child { border-top: 0; }
+.match__item .v-media { aspect-ratio: 16 / 11; }
+.match__why {
+  font-family: var(--ff-data); font-size: var(--fs-micro);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--accent); line-height: 1.6;
+}
+.match__score {
+  font-family: var(--ff-display); font-weight: 700;
+  font-size: 0.875rem; color: var(--fg-faint);
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 480px) {
+  .match__item { grid-template-columns: 84px 1fr; gap: var(--s-3); }
+}
+
+/* --------------------------------------------------------------------------
+   06 — INSIDE THE MACHINE · sticky scroll story
+   Native position:sticky rather than a pinned ScrollTrigger — cheaper, and it
+   cannot desynchronise from the scrollbar.
+   -------------------------------------------------------------------------- */
+.machine { position: relative; }
+.machine__track { height: 340vh; }
+
+.machine__stage {
+  position: sticky; top: 0;
+  height: 100svh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  overflow: hidden;
+}
+
+.machine__viewport {
+  position: relative;
+  display: grid; place-items: center;
+  min-height: 0;
+}
+.machine__viewport canvas { width: 100% !important; height: 100% !important; display: block; }
+.machine__svg { width: min(92%, 1000px); }
+
+.machine__hud {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  min-width: 0;
+  gap: var(--s-5);
+  padding: var(--s-5) var(--gutter);
+  border-top: var(--hair) solid var(--graphite-line);
+}
+
+.callout { max-width: 46ch; min-width: 0; display: grid; gap: var(--s-2); min-height: 132px; }
+.callout__q {
+  font-family: var(--ff-data); font-size: var(--fs-micro);
+  letter-spacing: var(--tr-micro); text-transform: uppercase; color: var(--accent);
+}
+.callout__title {
+  font-family: var(--ff-display); font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+  font-weight: 600; letter-spacing: -0.015em; text-transform: uppercase;
+}
+.callout__copy { color: var(--mist); font-size: var(--fs-small); }
+.callout > * {
+  opacity: 0; transform: translateY(10px);
+  transition: opacity var(--t-base) var(--e-out), transform var(--t-base) var(--e-out);
+}
+.callout[data-live='true'] > * { opacity: 1; transform: none; }
+.callout[data-live='true'] > *:nth-child(2) { transition-delay: 50ms; }
+.callout[data-live='true'] > *:nth-child(3) { transition-delay: 100ms; }
+
+.machine__progress { display: flex; gap: 6px; flex: none; align-items: center; }
+.machine__dot {
+  width: 26px; height: 2px; background: var(--graphite-line);
+  transition: background var(--t-base) linear;
+}
+.machine__dot[data-on='true'] { background: var(--accent); }
+
+.machine__mode {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--s-4);
+  padding: var(--s-4) var(--gutter);
+  border-bottom: var(--hair) solid var(--graphite-line);
+}
+
+@media (max-width: 760px) {
+  .machine__track { height: 300vh; }
+  .machine__hud { flex-direction: column; align-items: flex-start; gap: var(--s-4); }
+  .callout { min-height: 152px; }
+}
+
+/* --------------------------------------------------------------------------
+   07 — COMPARE STRIP
+   -------------------------------------------------------------------------- */
+.cmp-strip {
+  display: grid;
+  grid-template-columns: 148px repeat(3, 1fr);
+  border: var(--hair) solid var(--line);
+  border-radius: var(--r-sm);
+  overflow: hidden;
+}
+.cmp-strip__cell {
+  padding: var(--s-4);
+  border-left: var(--hair) solid var(--line);
+  border-top: var(--hair) solid var(--line);
+  min-width: 0;
+}
+.cmp-strip__cell:nth-child(4n + 1) { border-left: 0; }
+.cmp-strip > .cmp-strip__cell:nth-child(-n + 4) { border-top: 0; }
+
+.cmp-strip__rowlabel {
+  font-family: var(--ff-data); font-size: var(--fs-micro);
+  letter-spacing: var(--tr-micro); text-transform: uppercase;
+  color: var(--fg-faint);
+  display: flex; align-items: center;
+}
+.cmp-strip__head { display: grid; gap: var(--s-3); }
+.cmp-strip__head .v-media { aspect-ratio: 16 / 10; }
+.cmp-strip__name { font-family: var(--ff-display); font-weight: 600; font-size: 1rem; line-height: 1.2; }
+
+.cmp-strip__value {
+  font-family: var(--ff-display); font-weight: 600; font-size: 1.0625rem;
+  font-variant-numeric: tabular-nums;
+  display: flex; align-items: baseline; gap: 4px; flex-wrap: wrap;
+}
+.cmp-strip__value.is-best { color: var(--accent); }
+.cmp-strip__value .metric__unit { font-size: 0.6875rem; }
+
+.cmp-slot {
+  display: grid; place-items: center; gap: var(--s-3);
+  min-height: 190px;
+  border: var(--hair) dashed var(--graphite-line);
+  border-radius: var(--r-sm);
+  color: var(--fg-faint);
+  text-align: center;
+  padding: var(--s-4);
+}
+
+@media (max-width: 860px) {
+  .cmp-strip {
+    display: block; border: 0; overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .cmp-strip__inner {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(200px, 1fr);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   08 — TEST RIDE
+   -------------------------------------------------------------------------- */
+.testride {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(90% 120% at 10% 100%, rgba(255, 75, 18, 0.2), transparent 58%),
+    var(--ink);
+}
+.testride__inner { position: relative; z-index: 2; display: grid; gap: var(--s-7); }
+.testride__inner > * { min-width: 0; }
+@media (min-width: 1000px) {
+  .testride__inner { grid-template-columns: 1.1fr 0.9fr; align-items: center; gap: var(--s-9); }
+}
+.testride__art { opacity: 0.85; }
+
+/* --------------------------------------------------------------------------
+   09 — SERVICES
+   -------------------------------------------------------------------------- */
+.services {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  border-top: var(--hair) solid var(--line);
+  border-left: var(--hair) solid var(--line);
+}
+.service {
+  padding: var(--s-6);
+  border-right: var(--hair) solid var(--line);
+  border-bottom: var(--hair) solid var(--line);
+  display: grid; gap: var(--s-3); align-content: start;
+  transition: background var(--t-base) var(--e-out);
+  min-height: 190px;
+}
+.service:hover { background: var(--raise); }
+.service__idx {
+  font-family: var(--ff-data); font-size: var(--fs-micro);
+  letter-spacing: var(--tr-micro); color: var(--accent);
+}
+.service__name {
+  font-family: var(--ff-display); font-size: 1.25rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: -0.01em;
+}
+.service__copy { color: var(--fg-dim); font-size: var(--fs-small); }
+
+/* --------------------------------------------------------------------------
+   Shared: full-bleed statement band
+   -------------------------------------------------------------------------- */
+.band {
+  display: grid; gap: var(--s-5);
+  padding-block: clamp(56px, 7vw, 120px);
+  border-top: var(--hair) solid var(--line);
+  border-bottom: var(--hair) solid var(--line);
+}
+@media (min-width: 900px) {
+  .band { grid-template-columns: 1fr 1fr; gap: var(--s-9); align-items: end; }
+}

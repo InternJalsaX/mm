@@ -1,0 +1,7 @@
+# Local dev server and authoring tools — not part of the deployed site.
+# Keeping serve.py out also stops Vercel's zero-config detection from
+# mistaking this for a Python project.
+serve.py
+tools/
+__pycache__/
+*.pyc

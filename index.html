@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MM Motors — Find your ride. Scooters and motorcycles, petrol and electric.</title>
+<meta name="description" content="MM Motors is a multi-brand two-wheeler showroom. Compare petrol and electric scooters and motorcycles on published specifications, then book a test ride.">
+<meta name="theme-color" content="#0A0A0B">
+<meta property="og:title" content="MM Motors — Find your ride. Scooters and motorcycles, petrol and electric.">
+<meta property="og:description" content="MM Motors is a multi-brand two-wheeler showroom. Compare petrol and electric scooters and motorcycles on published specifications, then book a test ride.">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;500;600;700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap">
+
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/home.css">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230A0A0B'/><path d='M5 24V8l5.5 9L16 8v16' stroke='%23FF4B12' stroke-width='2.6' fill='none'/><path d='M18 24V8l5.5 9L29 8v16' stroke='%23F3F0EA' stroke-width='2.6' fill='none'/></svg>">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+
+<body class="on-dark" data-page="home">
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="hdr">
+  <div class="hdr__inner">
+    <a class="logo" href="index.html" aria-label="MM Motors — home">
+      <svg class="logo__mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M2 25V7l6 10.5L14 7v18" stroke="#FF4B12" stroke-width="2.8" fill="none" stroke-linejoin="round"/><path d="M17 25V7l6 10.5L29 7v18" stroke="currentColor" stroke-width="2.8" fill="none" stroke-linejoin="round"/></svg>
+      MM Motors
+      <span class="logo__sub">5 brands</span>
+    </a>
+
+    <nav class="nav" aria-label="Main">
+      <a class="nav__link" data-nav="brand" href="brand.html?b=tvs">Brands</a>
+      <a class="nav__link" data-nav="petrol" href="models.html?fuel=petrol">Petrol</a>
+      <a class="nav__link" data-nav="electric" href="models.html?fuel=electric">Electric</a>
+      <a class="nav__link" data-nav="finder" href="finder.html">Find your ride</a>
+      <a class="nav__link" data-nav="compare" href="compare.html">Compare</a>
+      <a class="nav__link" data-nav="services" href="services.html">Services</a>
+    </nav>
+
+    <div class="hdr__cta">
+      <a class="btn btn--primary btn--sm" href="test-ride.html">Book a test ride</a>
+      <button class="hdr__burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
+        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M2 5h16M2 10h16M2 15h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="drawer" id="drawer" data-open="false">
+  <button class="drawer__close" type="button" aria-label="Close menu">
+    <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+  </button>
+  <a class="drawer__link" href="brand.html?b=tvs">TVS <span class="micro">7 models</span></a>
+  <a class="drawer__link" href="brand.html?b=honda">Honda <span class="micro">6 models</span></a>
+  <a class="drawer__link" href="brand.html?b=bajaj">Bajaj <span class="micro">2 models</span></a>
+  <a class="drawer__link" href="brand.html?b=royalenfield">Royal Enfield <span class="micro">2 models</span></a>
+  <a class="drawer__link" href="brand.html?b=river">River <span class="micro">1 model</span></a>
+  <a class="drawer__link" href="models.html?fuel=petrol">Petrol</a>
+  <a class="drawer__link" href="models.html?fuel=electric">Electric</a>
+  <a class="drawer__link" href="finder.html">Find your ride</a>
+  <a class="drawer__link" href="compare.html">Compare</a>
+  <a class="drawer__link" href="services.html">Services</a>
+  <a class="drawer__link" href="test-ride.html">Book a test ride</a>
+</div>
+
+<main id="main">
+
+  <!-- ====================== 01 · INTRO ====================== -->
+  <section class="hero wrap" id="intro">
+    <div class="hero__grid" aria-hidden="true"></div>
+
+    <div class="hero__main">
+      <div class="hero__head">
+        <p class="eyebrow" data-index="01">Multi-brand two-wheeler showroom · Bengaluru</p>
+        <h1 class="display hero__title">
+          <span class="line">Your next ride,</span>
+          <span class="line thin">clearly.</span>
+        </h1>
+      </div>
+
+      <div class="hero__body">
+        <div class="hero__aside">
+          <p class="lede">
+            Five manufacturers, eighteen models, petrol and electric. Compare them on figures that are actually published — then ride the two you shortlisted.
+          </p>
+          <div class="cluster">
+            <a class="btn btn--primary" href="finder.html">Find your ride <svg class="btn__arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <a class="btn btn--outline" href="#brands">See the brands</a>
+          </div>
+          <dl class="hero__stats">
+            <div><dt class="micro">Manufacturers</dt><dd class="hero__stat">5</dd></div>
+            <div><dt class="micro">Models</dt><dd class="hero__stat">18</dd></div>
+            <div><dt class="micro">Electric</dt><dd class="hero__stat">3</dd></div>
+          </dl>
+        </div>
+
+        <figure class="hero__art" id="hero-art">
+          <figcaption class="hero__artcap micro"></figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="hero__foot">
+      <span class="scroll-cue">
+        <span class="scroll-cue__bar"></span>
+        Scroll to enter the showroom
+      </span>
+      <span class="micro">Discover · Compare · Ride</span>
+    </div>
+  </section>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker__track" id="ticker"></div>
+  </div>
+
+  <!-- ====================== 02 · BRANDS ====================== -->
+  <section class="section section--tight" id="brands">
+    <div class="wrap">
+      <header class="sec-head">
+        <div>
+          <p class="eyebrow" data-index="02" data-reveal="fade">The floor</p>
+          <h2 class="h2" data-reveal>Five manufacturers.<br>Pick a doorway.</h2>
+        </div>
+        <p class="body-dim" data-reveal="fade" style="max-width:36ch;font-size:var(--fs-small)">
+          This page shows you who MM Motors represents — not a product grid.
+          Open a manufacturer and you get its models, grouped and specified.
+        </p>
+      </header>
+    </div>
+    <div class="brand-index" id="brand-index" data-reveal="fade"></div>
+  </section>
+
+  <!-- ====================== 03 · PETROL / ELECTRIC ====================== -->
+  <section class="section section--flush" id="worlds">
+    <div class="wrap">
+      <header class="sec-head" style="margin-bottom:var(--s-6)">
+        <div>
+          <p class="eyebrow" data-index="03" data-reveal="fade">Two ways to move</p>
+          <h2 class="h2" data-reveal>Petrol or electric.<br>Different questions.</h2>
+        </div>
+      </header>
+    </div>
+    <div class="split" id="split"></div>
+  </section>
+
+  <!-- ====================== 04 · FIND YOUR RIDE ====================== -->
+  <section class="section on-light" id="find">
+    <div class="wrap">
+      <header class="sec-head">
+        <div>
+          <p class="eyebrow" data-index="04" data-reveal="fade">Find your ride</p>
+          <h2 class="h2" data-reveal>Don't know yet?<br>Answer four questions.</h2>
+        </div>
+        <a class="link-rule" data-reveal="fade" href="finder.html">Open the full finder <svg class="btn__arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </header>
+      <div class="finder" id="finder"></div>
+    </div>
+  </section>
+
+  <!-- ====================== 06 · INSIDE THE MACHINE ====================== -->
+  <section class="machine" id="machine" aria-labelledby="machine-title">
+    <div class="machine__track">
+      <div class="machine__stage on-graphite">
+        <div class="machine__mode">
+          <div>
+            <p class="eyebrow" data-index="05" style="margin:0">Inside the machine</p>
+            <h2 class="h3" id="machine-title" style="margin-top:6px">Scroll to take it apart</h2>
+          </div>
+          <div class="cluster" role="group" aria-label="Powertrain to inspect">
+            <button class="chip" type="button" data-machine="petrol" aria-pressed="true">Petrol</button>
+            <button class="chip" type="button" data-machine="electric" aria-pressed="false">Electric</button>
+          </div>
+        </div>
+
+        <div class="machine__viewport" id="machine-viewport"></div>
+
+        <div class="machine__hud">
+          <div class="callout" id="machine-callout" aria-live="polite">
+            <p class="callout__q"></p>
+            <h3 class="callout__title"></h3>
+            <p class="callout__copy"></p>
+          </div>
+          <div class="machine__progress" id="machine-progress" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== 07 · COMPARE ====================== -->
+  <section class="section on-light" id="compare">
+    <div class="wrap">
+      <header class="sec-head">
+        <div>
+          <p class="eyebrow" data-index="06" data-reveal="fade">Compare</p>
+          <h2 class="h2" data-reveal>Two models.<br>One honest table.</h2>
+        </div>
+        <a class="link-rule" data-reveal="fade" href="compare.html">Full comparison tool <svg class="btn__arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </header>
+      <div id="compare-strip" data-reveal></div>
+      <p class="disclosure" style="margin-top:var(--s-5)">
+        Petrol mileage and electric range are measured differently and are not
+        interchangeable. Every figure here carries its own qualifier, and no
+        "best" is marked where the units differ.
+      </p>
+    </div>
+  </section>
+
+  <!-- ====================== 08 · TEST RIDE ====================== -->
+  <section class="section testride" id="testride">
+    <div class="wrap testride__inner">
+      <div class="stack-lg">
+        <p class="eyebrow" data-index="07" data-reveal="fade">Experience</p>
+        <h2 class="h1" data-reveal>Feel it before<br>you decide.</h2>
+        <p class="lede" data-reveal="fade">
+          Specifications narrow it down to two. Ten minutes in the saddle decides
+          which one. Bring a licence — we'll have both ready.
+        </p>
+        <div class="cluster" data-reveal="fade">
+          <a class="btn btn--primary" href="test-ride.html">Book a test ride <svg class="btn__arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <a class="btn btn--outline" data-whatsapp href="#">WhatsApp MM Motors</a>
+        </div>
+        <dl class="metric-row" data-reveal="fade" style="max-width:560px">
+          <div class="metric"><dt class="metric__label">Test rides</dt><dd class="metric__value">7<span class="metric__unit">days a week</span></dd></div>
+          <div class="metric"><dt class="metric__label">Duration</dt><dd class="metric__value">10<span class="metric__unit">minutes+</span></dd></div>
+          <div class="metric"><dt class="metric__label">Cost</dt><dd class="metric__value">Free<span class="metric__unit">no obligation</span></dd></div>
+        </dl>
+      </div>
+      <div class="testride__art" id="testride-art" data-reveal="scale" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- ====================== 09 · SERVICES ====================== -->
+  <section class="section" id="services">
+    <div class="wrap">
+      <header class="sec-head">
+        <div>
+          <p class="eyebrow" data-index="08" data-reveal="fade">Services</p>
+          <h2 class="h2" data-reveal>Everything after<br>the handshake.</h2>
+        </div>
+        <a class="link-rule" data-reveal="fade" href="services.html">All services <svg class="btn__arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </header>
+      <div class="services" data-reveal-group>
+        <a class="service" href="models.html" data-reveal="fade">
+          <span class="service__idx">01</span><span class="service__name">Buy</span>
+          <span class="service__copy">18 models across five manufacturers, petrol and electric, on one floor.</span>
+        </a>
+        <a class="service" href="services.html#finance" data-reveal="fade">
+          <span class="service__idx">02</span><span class="service__name">Finance</span>
+          <span class="service__copy">EMI through our lending partners. Estimate it yourself on any model page.</span>
+        </a>
+        <a class="service" href="services.html#insure" data-reveal="fade">
+          <span class="service__idx">03</span><span class="service__name">Insure</span>
+          <span class="service__copy">Policy set up at the time of registration, renewals handled in-showroom.</span>
+        </a>
+        <a class="service" href="services.html#exchange" data-reveal="fade">
+          <span class="service__idx">04</span><span class="service__name">Exchange</span>
+          <span class="service__copy">Bring your old two-wheeler. We evaluate it against the new purchase.</span>
+        </a>
+        <a class="service" href="services.html#service" data-reveal="fade">
+          <span class="service__idx">05</span><span class="service__name">Service</span>
+          <span class="service__copy">Periodic servicing and repairs for everything we sell, at our own bay.</span>
+        </a>
+        <a class="service" href="test-ride.html" data-reveal="fade">
+          <span class="service__idx">06</span><span class="service__name">Experience</span>
+          <span class="service__copy">Test rides, seven days a week. The only part of this you cannot do online.</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="ftr">
+  <div class="wrap">
+    <div class="ftr__top">
+      <div class="ftr__col">
+        <a class="logo" href="index.html" style="margin-bottom:var(--s-4)">
+          <svg class="logo__mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M2 25V7l6 10.5L14 7v18" stroke="#FF4B12" stroke-width="2.8" fill="none" stroke-linejoin="round"/><path d="M17 25V7l6 10.5L29 7v18" stroke="currentColor" stroke-width="2.8" fill="none" stroke-linejoin="round"/></svg>
+          MM Motors
+        </a>
+        <p style="font-size:var(--fs-small);max-width:34ch;color:var(--steel)">
+          A multi-brand two-wheeler showroom. Discover, compare and ride before
+          you decide.
+        </p>
+        <p class="micro" style="margin-top:var(--s-4)">
+          <span data-dealer="address"></span><br>
+          <span data-dealer="hours"></span>
+        </p>
+      </div>
+
+      <div class="ftr__col">
+        <h4>Brands</h4>
+        <ul>
+          <li><a href="brand.html?b=tvs">TVS</a></li>
+          <li><a href="brand.html?b=honda">Honda</a></li>
+          <li><a href="brand.html?b=bajaj">Bajaj</a></li>
+          <li><a href="brand.html?b=royalenfield">Royal Enfield</a></li>
+          <li><a href="brand.html?b=river">River</a></li>
+          <li><a href="models.html?fuel=petrol">All petrol</a></li>
+          <li><a href="models.html?fuel=electric">All electric</a></li>
+        </ul>
+      </div>
+
+      <div class="ftr__col">
+        <h4>Decide</h4>
+        <ul>
+          <li><a href="finder.html">Find your ride</a></li>
+          <li><a href="compare.html">Compare models</a></li>
+          <li><a href="models.html">Browse everything</a></li>
+          <li><a href="test-ride.html">Book a test ride</a></li>
+        </ul>
+      </div>
+
+      <div class="ftr__col">
+        <h4>Talk to us</h4>
+        <ul>
+          <li><a data-dealer="phone" href="#"></a></li>
+          <li><a data-dealer="email" href="#"></a></li>
+          <li><a data-whatsapp href="#">WhatsApp</a></li>
+          <li><a href="services.html">Services</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ftr__bottom">
+      <p class="micro">© <span data-year></span> MM Motors · Independent dealership</p>
+      <p class="micro" style="max-width:58ch;text-transform:none;letter-spacing:0.04em;line-height:1.7">
+        TVS, Honda, Bajaj, Royal Enfield and River are trademarks of their respective manufacturers. All
+        specifications shown are manufacturer-claimed and may vary by variant.
+        Prices are indicative ex-showroom, not on-road. Confirm everything with
+        MM Motors before purchase.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<div class="sticky-cta">
+  <a class="btn btn--primary" href="test-ride.html">Book a test ride</a>
+  <a class="btn btn--outline" data-whatsapp href="#" aria-label="WhatsApp MM Motors"><svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" style="width:18px;height:18px"><path d="M10 .8a9 9 0 00-7.7 13.7L.8 19.2l4.9-1.4A9 9 0 1010 .8zm0 16.4a7.4 7.4 0 01-3.8-1l-.3-.2-2.8.8.8-2.7-.2-.3A7.4 7.4 0 1110 17.2zm4.2-5.4c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1l-.6.8c-.1.1-.3.2-.5.1a6 6 0 01-2.9-2.6c-.1-.2 0-.3.1-.5l.5-.6c.1-.2.1-.3 0-.5L8 5.9c-.2-.4-.4-.4-.5-.4h-.4c-.2 0-.5.1-.7.3-.3.3-.8.8-.8 1.8 0 1 .7 2 .8 2.2a8.5 8.5 0 003.3 2.9c1.6.6 1.9.5 2.3.5.4 0 1.2-.5 1.4-1 .2-.5.2-.9.1-1a.4.4 0 00-.3-.3z"/></svg></a>
+</div>
+
+<script type="module" src="assets/js/app.js"></script>
+</body>
+</html>
