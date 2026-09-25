@@ -1,16 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-
-  "//": [
-    "Static site, no build step. Vercel serves the repository root as-is.",
-    "cleanUrls is deliberately OFF: every internal link is an explicit .html",
-    "path carrying a query string (model.html?m=tvs-jupiter), and cleanUrls",
-    "would add a 308 redirect hop to each of those navigations."
-  ],
-
   "cleanUrls": false,
   "trailingSlash": false,
-
   "headers": [
     {
       "source": "/assets/img/(.*)",
@@ -19,7 +10,6 @@
       ]
     },
     {
-      "//": "CSS and JS filenames are not content-hashed, so they must revalidate or a redeploy would serve stale code against new markup.",
       "source": "/assets/(css|js)/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
