@@ -320,7 +320,7 @@ BODY_INDEX = """
 
     <div class="hero__main">
       <div class="hero__head">
-        <p class="eyebrow" data-index="01">Multi-brand two-wheeler showroom · Bengaluru</p>
+        <p class="eyebrow" data-reveal="fade" data-index="01">Multi-brand two-wheeler showroom</p>
         <h1 class="display hero__title">
           <span class="line">Your next ride,</span>
           <span class="line thin">clearly.</span>
@@ -328,15 +328,15 @@ BODY_INDEX = """
       </div>
 
       <div class="hero__body">
-        <div class="hero__aside">
-          <p class="lede">
+        <div class="hero__aside" data-reveal-group>
+          <p class="lede" data-reveal="fade" data-reveal-delay="180">
             {hero_lede}
           </p>
-          <div class="cluster">
+          <div class="cluster" data-reveal="fade" data-reveal-delay="180">
             <a class="btn btn--primary" href="finder.html">Find your ride ARROW</a>
             <a class="btn btn--outline" href="#brands">See the brands</a>
           </div>
-          <dl class="hero__stats">{hero_stats}</dl>
+          <dl class="hero__stats" data-reveal="fade" data-reveal-delay="180">{hero_stats}</dl>
         </div>
 
         <figure class="hero__art" id="hero-art">
@@ -408,7 +408,7 @@ BODY_INDEX = """
       <div class="machine__stage on-graphite">
         <div class="machine__mode">
           <div>
-            <p class="eyebrow" data-index="05" style="margin:0">Inside the machine</p>
+            <p class="eyebrow" data-reveal="fade" data-index="05" style="margin:0">Inside the machine</p>
             <h2 class="h3" id="machine-title" style="margin-top:6px">Scroll to take it apart</h2>
           </div>
           <div class="cluster" role="group" aria-label="Powertrain to inspect">
@@ -518,7 +518,7 @@ BODY_MODEL = """
   <noscript>
     <div class="wrap" style="padding-top:110px">
       <div class="empty" style="max-width:62ch">
-        <p class="eyebrow" data-index="!">JavaScript is off</p>
+        <p class="eyebrow" data-reveal="fade" data-index="!">JavaScript is off</p>
         <h1 class="h2">This page builds its detail from our model data.</h1>
         <p class="body-dim">
           Specifications, colours and variants are rendered in the browser, so
@@ -566,12 +566,12 @@ BODY_MODEL = """
 BODY_MODELS = """
   <section class="page-head wrap">
     <div id="models-rail"></div>
-    <div class="page-head__inner">
+    <div class="page-head__inner" data-reveal-group>
       <div>
-        <p class="eyebrow" data-index="→" id="models-eyebrow">The floor</p>
-        <h1 class="h1 page-head__title" id="models-title">Every model<br>on the floor.</h1>
+        <p class="eyebrow" data-reveal="fade" data-index="→" id="models-eyebrow">The floor</p>
+        <h1 class="h1 page-head__title" data-reveal id="models-title">Every model<br>on the floor.</h1>
       </div>
-      <p class="lede" id="models-lede">
+      <p class="lede" data-reveal="fade" id="models-lede">
         {count_models} two-wheelers from {count_brands} manufacturers. Filter by what
         actually decides it for you, then shortlist up to three to compare.
       </p>
@@ -610,7 +610,7 @@ BODY_BRAND = """
   <noscript>
     <div class="wrap" style="padding-top:110px">
       <div class="empty" style="max-width:62ch">
-        <p class="eyebrow" data-index="!">JavaScript is off</p>
+        <p class="eyebrow" data-reveal="fade" data-index="!">JavaScript is off</p>
         <h1 class="h2">This page builds its detail from our model data.</h1>
         <p class="body-dim">
           Specifications, colours and variants are rendered in the browser, so
@@ -634,12 +634,12 @@ BODY_BRAND = """
 
 BODY_COMPARE = """
   <section class="page-head wrap">
-    <div class="page-head__inner">
+    <div class="page-head__inner" data-reveal-group>
       <div>
-        <p class="eyebrow" data-index="→">Compare</p>
-        <h1 class="h1 page-head__title">Put them<br>side by side.</h1>
+        <p class="eyebrow" data-reveal="fade" data-index="→">Compare</p>
+        <h1 class="h1 page-head__title" data-reveal>Put them<br>side by side.</h1>
       </div>
-      <p class="lede">
+      <p class="lede" data-reveal="fade">
         Up to three models at once. Where a figure is the strongest in the row it
         is marked — but only when the units actually match.
       </p>
@@ -651,8 +651,8 @@ BODY_COMPARE = """
       <div>
         <header class="sec-head" style="margin-bottom:var(--s-5)">
           <div>
-            <p class="eyebrow" data-index="01">Pick models</p>
-            <h2 class="h3">Choose up to three</h2>
+            <p class="eyebrow" data-reveal="fade" data-index="01">Pick models</p>
+            <h2 class="h3" data-reveal>Choose up to three</h2>
           </div>
           <button class="btn btn--ghost btn--sm" type="button" data-garage-clear>Clear all</button>
         </header>
@@ -666,12 +666,12 @@ BODY_COMPARE = """
 
 BODY_FINDER = """
   <section class="page-head wrap">
-    <div class="page-head__inner">
+    <div class="page-head__inner" data-reveal-group>
       <div>
-        <p class="eyebrow" data-index="→">Find your ride</p>
-        <h1 class="h1 page-head__title">Tell us how<br>you'll use it.</h1>
+        <p class="eyebrow" data-reveal="fade" data-index="→">Find your ride</p>
+        <h1 class="h1 page-head__title" data-reveal>Tell us how<br>you'll use it.</h1>
       </div>
-      <p class="lede">
+      <p class="lede" data-reveal="fade">
         Four questions. No email, no phone number, no sales call. The result
         explains why each model matched, so you can disagree with it.
       </p>
@@ -716,12 +716,12 @@ BODY_FINDER = """
 
 BODY_TESTRIDE = """
   <section class="page-head wrap">
-    <div class="page-head__inner">
+    <div class="page-head__inner" data-reveal-group>
       <div>
-        <p class="eyebrow" data-index="→">Experience</p>
-        <h1 class="h1 page-head__title">Feel it before<br>you decide.</h1>
+        <p class="eyebrow" data-reveal="fade" data-index="→">Experience</p>
+        <h1 class="h1 page-head__title" data-reveal>Feel it before<br>you decide.</h1>
       </div>
-      <p class="lede">
+      <p class="lede" data-reveal="fade">
         Ten minutes, no cost, no obligation. Ride two models back to back — that
         is when the decision actually gets made.
       </p>
@@ -780,7 +780,7 @@ BODY_TESTRIDE = """
       </form>
 
       <aside class="book__aside">
-        <p class="eyebrow" data-index="→" style="margin:0">How it works</p>
+        <p class="eyebrow" data-reveal="fade" data-index="→" style="margin:0">How it works</p>
         <ol class="steps-list">
           <li><span class="micro">01</span><span>Send this request with the models you want to ride.</span></li>
           <li><span class="micro">02</span><span>We call you back to confirm the slot and check availability.</span></li>
@@ -804,20 +804,20 @@ BODY_TESTRIDE = """
 
 BODY_SERVICES = """
   <section class="page-head wrap">
-    <div class="page-head__inner">
+    <div class="page-head__inner" data-reveal-group>
       <div>
-        <p class="eyebrow" data-index="→">Services</p>
-        <h1 class="h1 page-head__title">Everything after<br>the handshake.</h1>
+        <p class="eyebrow" data-reveal="fade" data-index="→">Services</p>
+        <h1 class="h1 page-head__title" data-reveal>Everything after<br>the handshake.</h1>
       </div>
-      <p class="lede">
+      <p class="lede" data-reveal="fade">
         Buying the vehicle is one afternoon. Owning it is the next five years.
         These are the six things MM Motors does about that.
       </p>
     </div>
   </section>
 
-  <div class="wrap">
-    <section class="svc" id="buy">
+  <div class="wrap" data-reveal-group>
+    <section class="svc" data-reveal id="buy">
       <div class="p-sec__label">
         <span class="p-sec__idx">01</span>
         <h2 class="p-sec__title">Buy</h2>
@@ -833,7 +833,7 @@ BODY_SERVICES = """
       </div>
     </section>
 
-    <section class="svc" id="finance">
+    <section class="svc" data-reveal id="finance">
       <div class="p-sec__label">
         <span class="p-sec__idx">02</span>
         <h2 class="p-sec__title">Finance</h2>
@@ -849,7 +849,7 @@ BODY_SERVICES = """
       </div>
     </section>
 
-    <section class="svc" id="insure">
+    <section class="svc" data-reveal id="insure">
       <div class="p-sec__label">
         <span class="p-sec__idx">03</span>
         <h2 class="p-sec__title">Insure</h2>
@@ -864,7 +864,7 @@ BODY_SERVICES = """
       </div>
     </section>
 
-    <section class="svc" id="exchange">
+    <section class="svc" data-reveal id="exchange">
       <div class="p-sec__label">
         <span class="p-sec__idx">04</span>
         <h2 class="p-sec__title">Exchange</h2>
@@ -879,7 +879,7 @@ BODY_SERVICES = """
       </div>
     </section>
 
-    <section class="svc" id="service">
+    <section class="svc" data-reveal id="service">
       <div class="p-sec__label">
         <span class="p-sec__idx">05</span>
         <h2 class="p-sec__title">Service</h2>
@@ -894,7 +894,7 @@ BODY_SERVICES = """
       </div>
     </section>
 
-    <section class="svc" id="experience">
+    <section class="svc" data-reveal id="experience">
       <div class="p-sec__label">
         <span class="p-sec__idx">06</span>
         <h2 class="p-sec__title">Experience</h2>
