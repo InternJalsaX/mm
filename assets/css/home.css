@@ -38,22 +38,25 @@
 
 .hero__title { position: relative; z-index: 3; }
 .hero__title .line { display: block; }
-.hero__title .line > span { display: block; }
+.hero__title .word { display: inline-block; }
 
 /* A masked line-reveal (overflow:hidden + translateY(105%)) only works for text
    that is guaranteed never to wrap. This headline wraps at narrow widths, and a
    clipped headline is a worse outcome than a simpler animation — so the reveal
-   is a short, clip-free rise instead.
+   is a short, clip-free rise instead, staggered per word — inline-block words
+   still wrap wherever the line needs to break, so nothing is ever clipped.
    Keyframes with `both` fill rather than a JS-toggled class, so the headline can
    never be left hidden by a frame that did not run (background tab, paused
-   compositor, a module that failed to load). */
-.js .hero__title .line {
+   compositor, a module that failed to load). The global prefers-reduced-motion
+   rule collapses the duration, and `both` then holds the finished state. */
+.js .hero__title .word {
   animation: hero-rise var(--t-cine) var(--e-out) both;
+  animation-delay: calc(var(--i, 0) * 65ms);
 }
-.js .hero__title .line:nth-child(2) { animation-delay: 110ms; }
 
 @keyframes hero-rise {
-  from { opacity: 0; transform: translateY(26px); }
+  /* em, so the rise stays proportional across the display clamp (3.25rem-11rem) */
+  from { opacity: 0; transform: translateY(0.18em); }
   to   { opacity: 1; transform: none; }
 }
 

@@ -309,6 +309,24 @@ def sec_head(index, eyebrow, title, aside=""):
       </header>"""
 
 
+# The headline is split into words so it can stagger in word by word. Words,
+# not characters: a word is the unit a reader takes in, and per-character on a
+# display face at 11rem reads as noise rather than craft.
+HERO_TITLE_LINES = (("", "Your next ride,"), ("thin", "clearly."))
+
+
+def hero_title() -> str:
+    lines, i = [], 0
+    for extra, text in HERO_TITLE_LINES:
+        cls = f"line {extra}".strip()
+        spans = []
+        for word in text.split():
+            spans.append(f'<span class="word" style="--i:{i}">{word}</span>')
+            i += 1
+        lines.append(f'<span class="{cls}">{" ".join(spans)}</span>')
+    return "\n          ".join(lines)
+
+
 # ==========================================================================
 # PAGE BODIES
 # ==========================================================================
@@ -322,8 +340,7 @@ BODY_INDEX = """
       <div class="hero__head">
         <p class="eyebrow" data-reveal="fade" data-index="01">Multi-brand two-wheeler showroom</p>
         <h1 class="display hero__title">
-          <span class="line">Your next ride,</span>
-          <span class="line thin">clearly.</span>
+          {hero_title}
         </h1>
       </div>
 
@@ -1021,6 +1038,7 @@ def build() -> None:
         for token, value in (
             ("{hero_lede}", hero_lede()),
             ("{hero_stats}", hero_stats()),
+            ("{hero_title}", hero_title()),
             ("{count_models}", str(counts()["models"])),
             ("{count_brands}", in_words(counts()["brands"])),
         ):
