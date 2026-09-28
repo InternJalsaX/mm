@@ -64,7 +64,13 @@ function shadowTexture() {
   return t;
 }
 
-export async function createScene({ container, vehicle, mode = 'story' }) {
+export async function createScene({
+  container,
+  vehicle,
+  mode = 'story',
+  modelUrl = null,      // GLB to load; null keeps the procedural scooter
+  onProgress = null,    // (0..1 | null) — null means 'size unknown'
+}) {
   /* ---------------- renderer ---------------- */
   const renderer = new THREE.WebGLRenderer({
     antialias: true,
@@ -76,7 +82,7 @@ export async function createScene({ container, vehicle, mode = 'story' }) {
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
   container.appendChild(renderer.domElement);
-  renderer.domElement.style.touchAction = mode === 'viewer' ? 'pan-y' : 'auto';
+  renderer.domElement.style.touchAction = mode === 'viewer' ? 'none' : 'auto';
   renderer.domElement.setAttribute('aria-hidden', 'true');
 
   const scene = new THREE.Scene();
@@ -328,6 +334,88 @@ export async function createScene({ container, vehicle, mode = 'story' }) {
   const ro = new ResizeObserver(resize);
   ro.observe(container);
 
+  /* ---------------- optional GLB ----------------
+     The procedural scooter above is the loading state. It is real geometry,
+     so while a GLB is in flight the reader already has something they can
+     orbit -- never an empty stage or a spinner over blank space. When the
+     GLB resolves it is framed to the same footprint, faded up, and the
+     procedural body is hidden on the same frame the fade completes.
+
+     Loaders are imported here rather than at module scope so a page that
+     never loads a GLB never pays for GLTFLoader or the Draco decoder. */
+  let glb = null;
+
+  async function loadGLB(url) {
+    const [{ GLTFLoader }, { DRACOLoader }] = await Promise.all([
+      import('three/addons/loaders/GLTFLoader.js'),
+      import('three/addons/loaders/DRACOLoader.js'),
+    ]);
+
+    const loader = new GLTFLoader();
+    // Draco is opt-in per file: an uncompressed GLB never fetches the decoder.
+    const draco = new DRACOLoader();
+    draco.setDecoderPath(
+      'https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/libs/draco/gltf/'
+    );
+    draco.setDecoderConfig({ type: 'js' });
+    loader.setDRACOLoader(draco);
+
+    const gltf = await new Promise((resolve, reject) => {
+      loader.load(
+        url,
+        resolve,
+        (e) => onProgress?.(e.total ? e.loaded / e.total : null),
+        reject
+      );
+    });
+    draco.dispose();
+
+    const root = gltf.scene;
+
+    /* Frame it: whatever units the model arrives in, sit it on the floor and
+       scale it to the same 1.85m length the rest of the scene is built for,
+       so lighting, shadow and camera limits keep working unchanged. */
+    const box = new THREE.Box3().setFromObject(root);
+    const size = box.getSize(new THREE.Vector3());
+    const longest = Math.max(size.x, size.z) || 1;
+    const scale = 1.85 / longest;
+    root.scale.setScalar(scale);
+
+    box.setFromObject(root);
+    const mid = box.getCenter(new THREE.Vector3());
+    root.position.x -= mid.x;
+    root.position.z -= mid.z;
+    root.position.y -= box.min.y;      // stand on y = 0
+
+    // Fade in, and collect the materials so destroy() can release them.
+    const mats = [];
+    root.traverse((o) => {
+      if (!o.material) return;
+      const list = Array.isArray(o.material) ? o.material : [o.material];
+      list.forEach((m) => {
+        m.transparent = true;
+        m.opacity = 0;
+        mats.push(m);
+        allMats.push(m);
+      });
+    });
+
+    scene.add(root);
+    glb = { root, mats, fade: 0 };
+    onProgress?.(1);
+    return root;
+  }
+
+  /* Kick the GLB off without awaiting it: createScene resolves as soon as the
+     procedural scooter is on screen, so the reader can start orbiting while
+     the model downloads. */
+  if (modelUrl) {
+    loadGLB(modelUrl).catch((err) => {
+      console.info('[MM Motors] GLB unavailable — procedural scooter kept.', err);
+      onProgress?.(1);
+    });
+  }
+
   /* ---------------- state ---------------- */
   const state = {
     yaw: mode === 'viewer' ? -0.34 : -0.15,
@@ -338,32 +426,52 @@ export async function createScene({ container, vehicle, mode = 'story' }) {
     focus: null,
   };
 
-  /* drag to rotate — only in viewer mode */
+  /* ---------------- inspection controls (viewer mode) ----------------
+     Story mode keeps its scripted camera; viewer mode hands the camera to
+     the reader. OrbitControls orbits the CAMERA rather than spinning the
+     model, which is what makes it feel like walking around a physical
+     scooter instead of watching one on a turntable.
+
+     enableDamping is the inertia the brief asks for: the scooter keeps
+     drifting after the pointer lifts and settles, rather than stopping dead
+     or snapping to an angle.
+
+     Panning stays off so the scooter can never be dragged out of frame, and
+     the polar angle is clamped so the reader cannot orbit under the floor
+     and see the scene from beneath its own contact shadow. */
+  let controls = null;
   if (mode === 'viewer') {
-    let dragging = false;
-    let lastX = 0;
-    const el = renderer.domElement;
-    el.style.cursor = 'grab';
+    const { OrbitControls } = await import('three/addons/controls/OrbitControls.js');
+    controls = new OrbitControls(camera, renderer.domElement);
+    controls.target.set(0, 0.62, 0);
 
-    const down = (x) => {
-      dragging = true;
-      lastX = x;
-      el.style.cursor = 'grabbing';
-    };
-    const move = (x) => {
-      if (!dragging) return;
-      state.yawTarget += (x - lastX) * 0.009;
-      lastX = x;
-    };
-    const up = () => {
-      dragging = false;
-      el.style.cursor = 'grab';
-    };
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.075;
+    controls.rotateSpeed = 0.85;
 
-    el.addEventListener('pointerdown', (e) => down(e.clientX));
-    window.addEventListener('pointermove', (e) => move(e.clientX));
-    window.addEventListener('pointerup', up);
-    el.addEventListener('pointercancel', up);
+    controls.enablePan = false;
+    controls.enableZoom = true;
+    controls.zoomSpeed = 0.75;
+    controls.minDistance = 1.7;   // close enough to read the switchgear
+    controls.maxDistance = 5.2;   // far enough to see the whole machine
+
+    controls.minPolarAngle = 0.24;              // never straight down
+    controls.maxPolarAngle = Math.PI / 2 - 0.02; // never below the floor
+
+    // One finger rotates, two fingers pinch-zoom.
+    controls.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_ROTATE };
+
+    renderer.domElement.style.cursor = 'grab';
+    renderer.domElement.addEventListener('pointerdown', () => {
+      renderer.domElement.style.cursor = 'grabbing';
+    });
+    window.addEventListener('pointerup', () => {
+      if (renderer.domElement) renderer.domElement.style.cursor = 'grab';
+    });
+
+    // Double click returns the camera to the angle it started at.
+    controls.saveState();
+    renderer.domElement.addEventListener('dblclick', () => controls.reset());
   }
 
   /* ---------------- loop ---------------- */
@@ -377,7 +485,8 @@ export async function createScene({ container, vehicle, mode = 'story' }) {
     state.yaw += (state.yawTarget - state.yaw) * Math.min(dt * 5.5, 1);
     state.explode += (state.explodeTarget - state.explode) * Math.min(dt * 4, 1);
 
-    bike.rotation.y = state.yaw;
+    // Story mode turns the model; viewer mode turns the camera instead.
+    if (mode === 'story') bike.rotation.y = state.yaw;
 
     Object.entries(parts).forEach(([name, obj]) => {
       const { home, explode } = obj.userData;
@@ -394,16 +503,32 @@ export async function createScene({ container, vehicle, mode = 'story' }) {
       });
     });
 
+    if (glb) {
+      glb.fade = Math.min(glb.fade + dt * 1.6, 1);
+      const eased = glb.fade * glb.fade * (3 - 2 * glb.fade); // smoothstep
+      glb.mats.forEach((m) => {
+        m.opacity = eased;
+        m.depthWrite = eased > 0.95;
+      });
+      // One representation at a time, swapped only once the GLB can cover it.
+      if (eased > 0.995 && bike.visible) bike.visible = false;
+    }
+
     shadow.material.opacity = 1 - state.explode * 0.7;
 
-    // Camera pulls back slightly as the machine opens, so nothing leaves frame
-    const dist = 3.0 + state.explode * 0.6;
-    camera.position.set(
-      Math.cos(AZIMUTH) * dist,
-      1.02 + state.explode * 0.24,
-      Math.sin(AZIMUTH) * dist
-    );
-    camera.lookAt(0, 0.6, 0);
+    if (mode === 'story') {
+      // Camera pulls back slightly as the machine opens, so nothing leaves frame
+      const dist = 3.0 + state.explode * 0.6;
+      camera.position.set(
+        Math.cos(AZIMUTH) * dist,
+        1.02 + state.explode * 0.24,
+        Math.sin(AZIMUTH) * dist
+      );
+      camera.lookAt(0, 0.6, 0);
+    } else if (controls) {
+      // Damping needs a tick every frame to spend the leftover momentum.
+      controls.update();
+    }
 
     renderer.render(scene, camera);
   }
@@ -448,13 +573,53 @@ export async function createScene({ container, vehicle, mode = 'story' }) {
       paintMat.color.set(next.colours?.[0]?.paint || '#C8CCD2');
       buildPowertrain();
     },
+    resetView() {
+      controls?.reset();
+    },
+    /* Button zoom. OrbitControls has no public dolly, so step the camera
+       along its own view ray and let the same min/max distance clamp apply
+       as for the wheel — the buttons cannot reach anywhere a scroll cannot. */
+    zoom(direction) {
+      if (!controls) return;
+      const ray = camera.position.clone().sub(controls.target);
+      const next = THREE.MathUtils.clamp(
+        ray.length() * (direction > 0 ? 1.18 : 1 / 1.18),
+        controls.minDistance,
+        controls.maxDistance
+      );
+      camera.position.copy(controls.target).addScaledVector(ray.normalize(), next);
+      controls.update();
+    },
+    /* Returns the loaded root, or null if there was no GLB / it failed. The
+       caller decides what to tell the reader; the scene stays usable either
+       way because the procedural scooter is still standing. */
+    async loadModel(url) {
+      try {
+        return await loadGLB(url);
+      } catch (err) {
+        console.info('[MM Motors] GLB unavailable — procedural scooter kept.', err);
+        return null;
+      }
+    },
     setActive,
     get yaw() {
       return state.yaw;
     },
     destroy() {
       renderer.setAnimationLoop(null);
+      controls?.dispose();
       ro.disconnect();
+      if (glb) {
+        scene.remove(glb.root);
+        glb.root.traverse((o) => {
+          o.geometry?.dispose();
+          const list = o.material ? (Array.isArray(o.material) ? o.material : [o.material]) : [];
+          list.forEach((m) => {
+            Object.values(m).forEach((v) => v?.isTexture && v.dispose());
+          });
+        });
+        glb = null;
+      }
       scene.traverse((o) => o.geometry?.dispose());
       allMats.forEach((m) => m.dispose());
       shadowTex.dispose();

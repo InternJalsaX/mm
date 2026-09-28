@@ -158,7 +158,7 @@ function split() {
         ${w.id === 'electric' ? `<span class="accent">${esc(w.label)}</span>` : esc(w.label)}
       </h3>
       <p class="lede" style="margin-top:var(--s-3);font-size:1.0625rem">${esc(w.statement)}</p>
-      <p style="color:var(--mist);font-size:var(--fs-small);max-width:40ch;margin-top:var(--s-3)">
+      <p style="color:var(--fg-dim);font-size:var(--fs-small);max-width:40ch;margin-top:var(--s-3)">
         ${esc(w.copy)}
       </p>
       <ul class="split__concerns">

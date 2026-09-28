@@ -85,6 +85,39 @@ export const QUALIFIERS = {
 /* --------------------------------------------------------------------------
    Vehicles
    -------------------------------------------------------------------------- */
+/* ==========================================================================
+   3D MODELS
+
+   Paths are data, not code. Drop a real GLB at one of these paths, add the id
+   here, and the viewer uses it on the next load with no other change: the
+   loader, framing, fade-in, colour binding and disposal are already wired.
+
+   An id that is absent (or maps to null) is not an error. The viewer falls
+   back to the procedural scooter in showroom3d.js, which is real geometry
+   rather than a picture of geometry -- so a model that has not been produced
+   yet degrades to something inspectable instead of to an empty stage.
+
+   PLACEHOLDER_MODEL is a deliberately crude block at scooter proportions,
+   named PLACEHOLDER_not_a_real_scooter inside the file. It exists so the
+   glTF path can be exercised before real assets arrive. It is never shown
+   unless a model is mapped to it, or ?glb=placeholder is in the URL.
+   Regenerate it with: python tools/make-placeholder-glb.py
+   ========================================================================== */
+export const PLACEHOLDER_MODEL = 'assets/models/placeholder-scooter.glb';
+
+export const MODELS_3D = {
+  // 'tvs-jupiter':  'assets/models/tvs-jupiter.glb',
+  // 'river-indie':  'assets/models/river-indie.glb',
+};
+
+/* Resolve the GLB for a vehicle, honouring ?glb=placeholder for testing. */
+export function model3dFor(id) {
+  const forced = new URLSearchParams(location.search).get('glb');
+  if (forced === 'placeholder') return PLACEHOLDER_MODEL;
+  if (forced === 'off') return null;
+  return MODELS_3D[id] || null;
+}
+
 export const VEHICLES = [
   /* ===================== TVS ===================== */
   {

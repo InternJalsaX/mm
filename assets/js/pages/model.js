@@ -7,7 +7,9 @@
    colours → variants → ownership → test ride.
    ========================================================================== */
 
-import { VEHICLES, BRANDS, byId, byBrand, priceLabel, COUNTS } from '../data/vehicles.js';
+import {
+  VEHICLES, BRANDS, byId, byBrand, priceLabel, COUNTS, model3dFor,
+} from '../data/vehicles.js';
 import { mediaHTML, vehicleSVG } from '../art.js';
 import {
   metric, metricRow, price, specTable, featureList, disclosure, fuelTag,
@@ -415,11 +417,29 @@ function stage() {
     scene?.setExploded(exploded);
   });
 
-  /* --- optional WebGL viewer --------------------------------------------- */
+  /* --- interactive 3D viewer ---------------------------------------------
+     This used to require a >=900px viewport, which excluded every phone. The
+     viewer is a primary way to inspect the machine, so a phone gets it too —
+     the cost is paid back by a lower pixel ratio inside showroom3d.js rather
+     than by withholding the feature.
+
+     Still refused when the reader asked for less motion, when the device
+     reports very few cores, when Data Saver is on, or when there is no WebGL
+     at all. In each of those cases the photograph and technical illustration
+     remain, which are not a downgraded 3D view but a different, complete one. */
+  const webgl = (() => {
+    try {
+      const c = document.createElement('canvas');
+      return !!(c.getContext('webgl2') || c.getContext('webgl'));
+    } catch {
+      return false;
+    }
+  })();
+
   const capable =
     !reduceMotion() &&
-    window.innerWidth >= 900 &&
-    (navigator.hardwareConcurrency || 4) > 4 &&
+    webgl &&
+    (navigator.hardwareConcurrency || 4) >= 4 &&
     !navigator.connection?.saveData;
 
   if (!capable) {
@@ -432,16 +452,79 @@ function stage() {
     async () => {
       try {
         const mod = await import('../showroom3d.js');
+        const modelUrl = model3dFor(vehicle.id);
+
+        // A determinate bar only where the server sent a length; otherwise the
+        // label carries the state on its own rather than faking a percentage.
+        const load = document.createElement('div');
+        load.className = 'v3d__load';
+        load.setAttribute('role', 'status');
+        load.innerHTML =
+          '<span class="v3d__load-label">Loading model…</span>' +
+          '<span class="v3d__load-bar"><i></i></span>';
+        if (modelUrl) host.appendChild(load);
+
         scene = await mod.createScene({
           container: host,
           vehicle,
           mode: 'viewer',
+          modelUrl,
+          onProgress: (p) => {
+            if (!modelUrl) return;
+            const bar = load.querySelector('.v3d__load-bar i');
+            if (p == null) load.dataset.indeterminate = 'true';
+            else bar.style.width = `${Math.round(p * 100)}%`;
+            if (p === 1) {
+              load.dataset.done = 'true';
+              setTimeout(() => load.remove(), 420);
+            }
+          },
         });
+
         // Hide the flat layer — one live representation at a time
         host.querySelector('.v-media').style.display = 'none';
         scene.setColour(vehicle.colours[colourIndex]);
         scene.setExploded(exploded);
-        hint.textContent = 'Drag to rotate · 360°';
+
+        /* The affordance is not obvious from a still frame, so say it once and
+           retire it the moment the reader proves they already know. */
+        const cue = document.createElement('p');
+        cue.className = 'v3d__cue';
+        cue.textContent = 'Drag to explore';
+        host.appendChild(cue);
+        const retireCue = () => {
+          cue.dataset.gone = 'true';
+          setTimeout(() => cue.remove(), 320);
+          host.removeEventListener('pointerdown', retireCue);
+          host.removeEventListener('wheel', retireCue);
+          host.removeEventListener('touchstart', retireCue);
+        };
+        host.addEventListener('pointerdown', retireCue, { once: false });
+        host.addEventListener('wheel', retireCue, { passive: true });
+        host.addEventListener('touchstart', retireCue, { passive: true });
+        setTimeout(() => host.contains(cue) && retireCue(), 9000);
+
+        /* Explicit controls, because drag-and-scroll is discoverable but not
+           reliable: trackpads vary, and a keyboard user has no drag at all. */
+        const bar = document.createElement('div');
+        bar.className = 'v3d__ctl';
+        bar.innerHTML = [
+          '<button type="button" data-v3d="in"  aria-label="Zoom in">+</button>',
+          '<button type="button" data-v3d="out" aria-label="Zoom out">−</button>',
+          '<button type="button" data-v3d="reset">Reset view</button>',
+        ].join('');
+        host.appendChild(bar);
+        bar.addEventListener('click', (e) => {
+          const b = e.target.closest('[data-v3d]');
+          if (!b) return;
+          if (b.dataset.v3d === 'reset') scene.resetView();
+          else scene.zoom(b.dataset.v3d === 'in' ? -1 : 1);
+          retireCue();
+        });
+
+        hint.textContent = modelUrl
+          ? 'Interactive 3D model · drag, scroll to zoom'
+          : 'Interactive 3D · drag to orbit, scroll to zoom';
 
         const io = new IntersectionObserver(
           (entries) => scene?.setActive(entries.some((x) => x.isIntersecting)),

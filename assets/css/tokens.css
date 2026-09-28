@@ -13,29 +13,39 @@
   --steel:         #6E747C;
   --mist:          #A9AEB6;
 
-  /* ---- Colour: warm white ----------------------------------------------- */
-  --paper:         #F3F0EA;
-  --paper-raise:   #FAF8F4;
-  --paper-line:    #DED9D0;
-  --paper-line-2:  #EAE6DE;
+  /* ---- Colour: warm light showroom --------------------------------------
+     Ivory over sterile white, with cream tones for depth so sections read as
+     separate planes without a single gradient or drop shadow. */
+  --paper:         #F7F4EE;   /* primary surface: warm white / ivory   */
+  --cream:         #F1EBE1;   /* secondary surface: subtle cream       */
+  --cream-deep:    #E9E2D6;   /* deepest cream, carries the footer     */
+  --card:          #FFFFFF;   /* cards: white                          */
+  --card-warm:     #FCFAF7;   /* cards: very light beige               */
+  --paper-raise:   var(--card);
+  --paper-line:    #E3DDD1;   /* borders: extremely subtle beige       */
+  --paper-line-2:  #EFEAE1;
+  --charcoal:      #1C1B19;   /* text: deep charcoal, warm not blue    */
+  --warm-gray:     #57534B;   /* secondary text: muted warm gray       */
+  --warm-gray-2:   #67635C;   /* tertiary text, still AA on ivory      */
 
   /* ---- Signature accent — ELECTRIC ORANGE ------------------------------- */
   --accent:        #FF4B12;
   --accent-deep:   #D63A08;
   --accent-press:  #A72D06;
-  /* Accent as TEXT. On dark the brand orange clears 4.5:1; on paper it only
-     reaches 2.95:1, so .on-light overrides it. Fills keep --accent. */
-  --accent-text:   var(--accent);
+  /* Accent as TEXT. The brand orange is only 2.95:1 on ivory, so text uses a
+     deeper cut of the same hue; .on-dark puts the vivid one back. Fills always
+     keep --accent, so the brand colour is untouched wherever it is a fill. */
+  --accent-text:   #BD2D00;
   --accent-soft:   rgba(255, 75, 18, 0.12);
   --accent-line:   rgba(255, 75, 18, 0.34);
 
   /* ---- Contextual (set per-surface, see .on-dark / .on-light) ----------- */
-  --surface:       var(--ink);
-  --fg:            var(--paper);
-  --fg-dim:        var(--mist);
-  --fg-faint:      #898E96;
-  --line:          var(--graphite-line);
-  --raise:         var(--ink-raise);
+  --surface:       var(--paper);
+  --fg:            var(--charcoal);
+  --fg-dim:        var(--warm-gray);
+  --fg-faint:      var(--warm-gray-2);
+  --line:          var(--paper-line);
+  --raise:         var(--card);
 
   /* ---- Vehicle paint (overridden per-vehicle / per-swatch) -------------- */
   --paint:         #C8CCD2;
@@ -107,6 +117,7 @@
   --fg:      var(--paper);
   --fg-dim:  var(--mist);
   --fg-faint: #898E96;
+  --accent-text: var(--accent);
   --line:    var(--graphite-line);
   --raise:   var(--ink-raise);
   background: var(--surface);
@@ -118,6 +129,7 @@
   --fg:      var(--paper);
   --fg-dim:  var(--mist);
   --fg-faint: #898E96;
+  --accent-text: var(--accent);
   --line:    var(--graphite-2);
   --raise:   var(--graphite-2);
   background: var(--surface);
@@ -126,12 +138,50 @@
 
 .on-light {
   --surface: var(--paper);
-  --fg:      var(--ink);
-  --fg-dim:  #4A4F56;
-  --fg-faint: #6E6C65;
-  --accent-text: #CC3100;
+  --fg:      var(--charcoal);
+  --fg-dim:  var(--warm-gray);
+  --fg-faint: var(--warm-gray-2);
+  --accent-text: #BD2D00;
   --line:    var(--paper-line);
-  --raise:   var(--paper-raise);
+  --raise:   var(--card);
+  background: var(--surface);
+  color: var(--fg);
+}
+
+/* Cream and card carry the depth that the dark theme got from black. A
+   section steps up or down a plane; it never uses a gradient or a shadow. */
+.on-cream {
+  --surface: var(--cream);
+  --fg:      var(--charcoal);
+  --fg-dim:  var(--warm-gray);
+  --fg-faint: var(--warm-gray-2);
+  --accent-text: #BD2D00;
+  --line:    var(--paper-line);
+  --raise:   var(--card);
+  background: var(--surface);
+  color: var(--fg);
+}
+
+.on-cream-deep {
+  --surface: var(--cream-deep);
+  --fg:      var(--charcoal);
+  --fg-dim:  var(--warm-gray);
+  --fg-faint: var(--warm-gray-2);
+  --accent-text: #BD2D00;
+  --line:    #DCD4C6;
+  --raise:   var(--card-warm);
+  background: var(--surface);
+  color: var(--fg);
+}
+
+.on-card {
+  --surface: var(--card);
+  --fg:      var(--charcoal);
+  --fg-dim:  var(--warm-gray);
+  --fg-faint: var(--warm-gray-2);
+  --accent-text: #BD2D00;
+  --line:    var(--paper-line-2);
+  --raise:   var(--card-warm);
   background: var(--surface);
   color: var(--fg);
 }

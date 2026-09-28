@@ -60,7 +60,7 @@ SHELL = """<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title}</title>
 <meta name="description" content="{description}">
-<meta name="theme-color" content="#0A0A0B">
+<meta name="theme-color" content="#F7F4EE">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{description}">
 <meta property="og:type" content="website">
@@ -406,7 +406,7 @@ BODY_INDEX = """
   </section>
 
   <!-- ====================== 04 · FIND YOUR RIDE ====================== -->
-  <section class="section on-light" id="find">
+  <section class="section on-cream" id="find">
     <div class="wrap">
       <header class="sec-head">
         <div>
@@ -422,7 +422,7 @@ BODY_INDEX = """
   <!-- ====================== 06 · INSIDE THE MACHINE ====================== -->
   <section class="machine" id="machine" aria-labelledby="machine-title">
     <div class="machine__track">
-      <div class="machine__stage on-graphite">
+      <div class="machine__stage on-card">
         <div class="machine__mode">
           <div>
             <p class="eyebrow" data-reveal="fade" data-index="05" style="margin:0">Inside the machine</p>
@@ -449,7 +449,7 @@ BODY_INDEX = """
   </section>
 
   <!-- ====================== 07 · COMPARE ====================== -->
-  <section class="section on-light" id="compare">
+  <section class="section on-cream" id="compare">
     <div class="wrap">
       <header class="sec-head">
         <div>
@@ -646,7 +646,7 @@ BODY_BRAND = """
 
   <section class="brand-hero wrap" id="brand-hero"></section>
   <section class="section section--tight wrap" id="brand-models"></section>
-  <section class="section on-light" id="brand-close"></section>
+  <section class="section on-cream" id="brand-close"></section>
 """
 
 BODY_COMPARE = """
@@ -699,7 +699,7 @@ BODY_FINDER = """
     <div class="finder" id="finder-full"></div>
   </section>
 
-  <section class="section on-light wrap">
+  <section class="section on-cream wrap">
     <header class="sec-head">
       <div>
         <p class="eyebrow" data-index="→" data-reveal="fade">Still stuck?</p>
@@ -1050,7 +1050,7 @@ def build() -> None:
             css=css,
             favicon=FAVICON,
             head_extra=head_extra,
-            body_class=spec.get("body_class", "on-dark"),
+            body_class=spec.get("body_class", "on-light"),
             page=spec["page"],
             logo=LOGO_MARK,
             nav_links=nav_links(spec["active"]),

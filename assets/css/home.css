@@ -17,8 +17,8 @@
 .hero__grid {
   position: absolute; inset: 0;
   background-image:
-    linear-gradient(to right, var(--graphite-line) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--graphite-line) 1px, transparent 1px);
+    linear-gradient(to right, var(--line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--line) 1px, transparent 1px);
   background-size: clamp(60px, 8vw, 132px) clamp(60px, 8vw, 132px);
   opacity: 0.32;
   mask-image: radial-gradient(85% 70% at 50% 45%, #000 20%, transparent 75%);
@@ -76,7 +76,7 @@
 .hero__stats {
   display: flex; gap: var(--s-6);
   padding-top: var(--s-4);
-  border-top: var(--hair) solid var(--graphite-line);
+  border-top: var(--hair) solid var(--line);
   margin: 0;
 }
 .hero__stat {
@@ -105,7 +105,7 @@
   display: flex; align-items: center; justify-content: space-between;
   gap: var(--s-5); flex-wrap: wrap;
   padding-block: var(--s-5);
-  border-top: var(--hair) solid var(--graphite-line);
+  border-top: var(--hair) solid var(--line);
 }
 
 .scroll-cue {
@@ -114,7 +114,7 @@
   letter-spacing: var(--tr-micro); text-transform: uppercase; color: var(--fg-faint);
 }
 .scroll-cue__bar {
-  width: 1px; height: 30px; background: var(--graphite-line);
+  width: 1px; height: 30px; background: var(--line);
   position: relative; overflow: hidden;
 }
 .scroll-cue__bar::after {
@@ -146,13 +146,13 @@
    any number of manufacturers, each row a link into that brand's own section.
    -------------------------------------------------------------------------- */
 .brand-index {
-  border-top: var(--hair) solid var(--graphite-line);
+  border-top: var(--hair) solid var(--line);
 }
 
 .brand-row {
   position: relative;
   display: block;
-  border-bottom: var(--hair) solid var(--graphite-line);
+  border-bottom: var(--hair) solid var(--line);
   padding-block: clamp(20px, 2.6vw, 36px);
   overflow: hidden;
   transition: background-color var(--t-base) var(--e-out);
@@ -202,7 +202,7 @@
   line-height: 0.95;
   letter-spacing: var(--tr-display);
   text-transform: uppercase;
-  color: var(--paper);
+  color: var(--fg);
   display: flex;
   align-items: baseline;
   gap: var(--s-4);
@@ -216,7 +216,7 @@
 .brand-row:hover .brand-row__go { transform: translateX(6px); color: var(--accent-text); }
 
 .brand-row__statement {
-  color: var(--mist);
+  color: var(--fg-dim);
   font-size: var(--fs-small);
   max-width: 46ch;
   margin-top: var(--s-3);
@@ -293,11 +293,10 @@
   transition: flex-grow var(--t-cine) var(--e-inout);
   min-width: 0;
 }
-.split__half[data-world='petrol'] { background: var(--graphite); }
+.split__half[data-world='petrol'] { background: var(--cream); }
 .split__half[data-world='electric'] {
-  background:
-    radial-gradient(120% 100% at 100% 0%, rgba(255, 75, 18, 0.16), transparent 62%),
-    var(--ink);
+  background: var(--card);
+  box-shadow: inset 0 2px 0 0 var(--accent);
 }
 
 @media (min-width: 900px) {
@@ -317,9 +316,9 @@
 .split__concerns li {
   display: flex; align-items: baseline; gap: var(--s-4);
   padding: var(--s-3) 0;
-  border-top: var(--hair) solid var(--graphite-line);
+  border-top: var(--hair) solid var(--line);
   font-size: var(--fs-small);
-  color: var(--mist);
+  color: var(--fg-dim);
 }
 .split__concerns li .micro { flex: none; width: 2.5ch; color: var(--accent-text); }
 
@@ -413,7 +412,7 @@
   min-width: 0;
   gap: var(--s-5);
   padding: var(--s-5) var(--gutter);
-  border-top: var(--hair) solid var(--graphite-line);
+  border-top: var(--hair) solid var(--line);
 }
 
 .callout { max-width: 46ch; min-width: 0; display: grid; gap: var(--s-2); min-height: 132px; }
@@ -425,7 +424,7 @@
   font-family: var(--ff-display); font-size: clamp(1.25rem, 2.2vw, 1.75rem);
   font-weight: 600; letter-spacing: -0.015em; text-transform: uppercase;
 }
-.callout__copy { color: var(--mist); font-size: var(--fs-small); }
+.callout__copy { color: var(--fg-dim); font-size: var(--fs-small); }
 .callout > * {
   opacity: 0; transform: translateY(10px);
   transition: opacity var(--t-base) var(--e-out), transform var(--t-base) var(--e-out);
@@ -436,7 +435,7 @@
 
 .machine__progress { display: flex; gap: 6px; flex: none; align-items: center; }
 .machine__dot {
-  width: 26px; height: 2px; background: var(--graphite-line);
+  width: 26px; height: 2px; background: var(--line);
   transition: background var(--t-base) linear;
 }
 .machine__dot[data-on='true'] { background: var(--accent); }
@@ -445,7 +444,7 @@
   display: flex; align-items: center; justify-content: space-between;
   gap: var(--s-4);
   padding: var(--s-4) var(--gutter);
-  border-bottom: var(--hair) solid var(--graphite-line);
+  border-bottom: var(--hair) solid var(--line);
 }
 
 @media (max-width: 760px) {
@@ -494,7 +493,7 @@
 .cmp-slot {
   display: grid; place-items: center; gap: var(--s-3);
   min-height: 190px;
-  border: var(--hair) dashed var(--graphite-line);
+  border: var(--hair) dashed var(--line);
   border-radius: var(--r-sm);
   color: var(--fg-faint);
   text-align: center;
@@ -520,8 +519,8 @@
   position: relative;
   overflow: hidden;
   background:
-    radial-gradient(90% 120% at 10% 100%, rgba(255, 75, 18, 0.2), transparent 58%),
-    var(--ink);
+    radial-gradient(90% 120% at 10% 100%, rgba(204, 49, 0, 0.05), transparent 58%),
+    var(--cream);
 }
 .testride__inner { position: relative; z-index: 2; display: grid; gap: var(--s-7); }
 .testride__inner > * { min-width: 0; }
