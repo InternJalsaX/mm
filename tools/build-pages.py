@@ -24,7 +24,7 @@ ARROW = (
 
 LOGO_MARK = (
     '<svg class="logo__mark" viewBox="0 0 32 32" aria-hidden="true">'
-    '<path d="M2 25V7l6 10.5L14 7v18" stroke="#FF4B12" stroke-width="2.8" fill="none" stroke-linejoin="round"/>'
+    '<path d="M2 25V7l6 10.5L14 7v18" stroke="#E01F26" stroke-width="2.8" fill="none" stroke-linejoin="round"/>'
     '<path d="M17 25V7l6 10.5L29 7v18" stroke="currentColor" stroke-width="2.8" fill="none" stroke-linejoin="round"/>'
     '</svg>'
 )
@@ -40,7 +40,7 @@ WA_ICON = (
 FAVICON = (
     "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'>"
     "<rect width='32' height='32' fill='%230A0A0B'/>"
-    "<path d='M5 24V8l5.5 9L16 8v16' stroke='%23FF4B12' stroke-width='2.6' fill='none'/>"
+    "<path d='M5 24V8l5.5 9L16 8v16' stroke='%23E01F26' stroke-width='2.6' fill='none'/>"
     "<path d='M18 24V8l5.5 9L29 8v16' stroke='%23F3F0EA' stroke-width='2.6' fill='none'/></svg>"
 )
 
@@ -60,7 +60,7 @@ SHELL = """<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title}</title>
 <meta name="description" content="{description}">
-<meta name="theme-color" content="#F7F4EE">
+<meta name="theme-color" content="#FFFFFF">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{description}">
 <meta property="og:type" content="website">

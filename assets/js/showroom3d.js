@@ -130,8 +130,8 @@ export async function createScene({
     color: 0x24272c, metalness: 0.5, roughness: 0.5, transparent: true,
   });
   const accentMat = new THREE.MeshStandardMaterial({
-    color: 0xff4b12, metalness: 0.2, roughness: 0.4,
-    emissive: 0xff4b12, emissiveIntensity: 0.25, transparent: true,
+    color: 0xe01f26, metalness: 0.2, roughness: 0.4,
+    emissive: 0xe01f26, emissiveIntensity: 0.25, transparent: true,
   });
   const lampMat = new THREE.MeshStandardMaterial({
     color: 0xf6f2e9, emissive: 0xfff2dd, emissiveIntensity: 0.75,
@@ -296,7 +296,7 @@ export async function createScene({
     const geo = new THREE.BoxGeometry(0.5, 0.22, 0.2);
     const edges = new THREE.LineSegments(
       new THREE.EdgesGeometry(geo),
-      new THREE.LineBasicMaterial({ color: 0xff4b12, transparent: true, opacity: 0 })
+      new THREE.LineBasicMaterial({ color: 0xe01f26, transparent: true, opacity: 0 })
     );
     edges.position.set(-0.5, 0.6, 0);
     return addPart('storage', edges, [-0.14, 0.08, 0]);

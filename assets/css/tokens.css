@@ -16,28 +16,28 @@
   /* ---- Colour: warm light showroom --------------------------------------
      Ivory over sterile white, with cream tones for depth so sections read as
      separate planes without a single gradient or drop shadow. */
-  --paper:         #F7F4EE;   /* primary surface: warm white / ivory   */
-  --cream:         #F1EBE1;   /* secondary surface: subtle cream       */
-  --cream-deep:    #E9E2D6;   /* deepest cream, carries the footer     */
+  --paper:         #FFFFFF;   /* primary surface: white                */
+  --cream:         #F5F5F6;   /* secondary plane, just off white       */
+  --cream-deep:    #ECECEE;   /* deepest plane, carries the footer     */
   --card:          #FFFFFF;   /* cards: white                          */
-  --card-warm:     #FCFAF7;   /* cards: very light beige               */
+  --card-warm:     #FAFAFB;   /* cards: a half step off white          */
   --paper-raise:   var(--card);
-  --paper-line:    #E3DDD1;   /* borders: extremely subtle beige       */
-  --paper-line-2:  #EFEAE1;
-  --charcoal:      #1C1B19;   /* text: deep charcoal, warm not blue    */
-  --warm-gray:     #57534B;   /* secondary text: muted warm gray       */
-  --warm-gray-2:   #67635C;   /* tertiary text, still AA on ivory      */
+  --paper-line:    #E2E2E5;   /* borders: extremely subtle neutral     */
+  --paper-line-2:  #EFEFF1;
+  --charcoal:      #111113;   /* text: black                           */
+  --warm-gray:     #55555A;   /* secondary text: neutral grey          */
+  --warm-gray-2:   #69696E;   /* tertiary text, 4.62:1 on every plane  */
 
   /* ---- Signature accent — ELECTRIC ORANGE ------------------------------- */
-  --accent:        #FF4B12;
-  --accent-deep:   #D63A08;
-  --accent-press:  #A72D06;
-  /* Accent as TEXT. The brand orange is only 2.95:1 on ivory, so text uses a
-     deeper cut of the same hue; .on-dark puts the vivid one back. Fills always
-     keep --accent, so the brand colour is untouched wherever it is a fill. */
-  --accent-text:   #BD2D00;
-  --accent-soft:   rgba(255, 75, 18, 0.12);
-  --accent-line:   rgba(255, 75, 18, 0.34);
+  --accent:        #E01F26;   /* MM Motors red, off the showroom signage */
+  --accent-deep:   #E01F26;   /* CTA fill: white text on it is 4.78:1    */
+  --accent-press:  #B91A1F;   /* pressed / hover: 6.50:1 with white      */
+  /* Accent as TEXT. The brand red is 4.78:1 on white but drops below AA on
+     the deepest plane, so red text uses one step darker; .on-dark puts the
+     brand red back. Fills always keep --accent. */
+  --accent-text:   #CF1D23;
+  --accent-soft:   rgba(224, 31, 38, 0.10);
+  --accent-line:   rgba(224, 31, 38, 0.30);
 
   /* ---- Contextual (set per-surface, see .on-dark / .on-light) ----------- */
   --surface:       var(--paper);
@@ -141,7 +141,7 @@
   --fg:      var(--charcoal);
   --fg-dim:  var(--warm-gray);
   --fg-faint: var(--warm-gray-2);
-  --accent-text: #BD2D00;
+  --accent-text: #CF1D23;
   --line:    var(--paper-line);
   --raise:   var(--card);
   background: var(--surface);
@@ -155,7 +155,7 @@
   --fg:      var(--charcoal);
   --fg-dim:  var(--warm-gray);
   --fg-faint: var(--warm-gray-2);
-  --accent-text: #BD2D00;
+  --accent-text: #CF1D23;
   --line:    var(--paper-line);
   --raise:   var(--card);
   background: var(--surface);
@@ -167,7 +167,7 @@
   --fg:      var(--charcoal);
   --fg-dim:  var(--warm-gray);
   --fg-faint: var(--warm-gray-2);
-  --accent-text: #BD2D00;
+  --accent-text: #CF1D23;
   --line:    #DCD4C6;
   --raise:   var(--card-warm);
   background: var(--surface);
@@ -179,7 +179,7 @@
   --fg:      var(--charcoal);
   --fg-dim:  var(--warm-gray);
   --fg-faint: var(--warm-gray-2);
-  --accent-text: #BD2D00;
+  --accent-text: #CF1D23;
   --line:    var(--paper-line-2);
   --raise:   var(--card-warm);
   background: var(--surface);
