@@ -90,7 +90,7 @@
 .hero__art .v-media { aspect-ratio: 16 / 10; }
 .hero__artcap {
   position: absolute; left: 0; bottom: calc(var(--s-5) * -1);
-  color: var(--steel);
+  color: var(--fg-faint);
 }
 .js .hero__art {
   animation: hero-art 1100ms var(--e-out) 140ms both;
@@ -111,7 +111,7 @@
 .scroll-cue {
   display: inline-flex; align-items: center; gap: var(--s-3);
   font-family: var(--ff-data); font-size: var(--fs-micro);
-  letter-spacing: var(--tr-micro); text-transform: uppercase; color: var(--steel);
+  letter-spacing: var(--tr-micro); text-transform: uppercase; color: var(--fg-faint);
 }
 .scroll-cue__bar {
   width: 1px; height: 30px; background: var(--graphite-line);
@@ -190,7 +190,7 @@
   font-family: var(--ff-data);
   font-size: var(--fs-micro);
   letter-spacing: var(--tr-micro);
-  color: var(--accent);
+  color: var(--accent-text);
   align-self: start;
   padding-top: 8px;
 }
@@ -210,10 +210,10 @@
 }
 .brand-row__name .brand-row__go {
   font-size: 0.32em;
-  color: var(--steel);
+  color: var(--fg-faint);
   transition: transform var(--t-base) var(--e-out), color var(--t-fast) linear;
 }
-.brand-row:hover .brand-row__go { transform: translateX(6px); color: var(--accent); }
+.brand-row:hover .brand-row__go { transform: translateX(6px); color: var(--accent-text); }
 
 .brand-row__statement {
   color: var(--mist);
@@ -231,9 +231,9 @@
   font-size: var(--fs-micro);
   letter-spacing: var(--tr-micro);
   text-transform: uppercase;
-  color: var(--steel);
+  color: var(--fg-faint);
 }
-.brand-row__meta .accent { color: var(--accent); }
+.brand-row__meta .accent { color: var(--accent-text); }
 
 .brand-row__models {
   display: flex;
@@ -311,7 +311,7 @@
   font-weight: 700; line-height: 0.92;
   letter-spacing: var(--tr-display); text-transform: uppercase;
 }
-.split__half[data-world='electric'] .split__label .accent { color: var(--accent); }
+.split__half[data-world='electric'] .split__label .accent { color: var(--accent-text); }
 
 .split__concerns { display: grid; gap: 0; margin-top: var(--s-5); }
 .split__concerns li {
@@ -321,7 +321,7 @@
   font-size: var(--fs-small);
   color: var(--mist);
 }
-.split__concerns li .micro { flex: none; width: 2.5ch; color: var(--accent); }
+.split__concerns li .micro { flex: none; width: 2.5ch; color: var(--accent-text); }
 
 .split__art { pointer-events: none; opacity: 0.55; transition: opacity var(--t-cine) var(--e-out); }
 .split__half:hover .split__art { opacity: 1; }
@@ -343,7 +343,7 @@
 .fstep__head { display: flex; align-items: baseline; gap: var(--s-3); }
 .fstep__num {
   font-family: var(--ff-data); font-size: var(--fs-micro);
-  letter-spacing: var(--tr-micro); color: var(--accent); flex: none;
+  letter-spacing: var(--tr-micro); color: var(--accent-text); flex: none;
 }
 .fstep__q { font-family: var(--ff-display); font-size: 1.125rem; font-weight: 600; letter-spacing: -0.01em; }
 .fstep__opts { display: flex; flex-wrap: wrap; gap: var(--s-2); }
@@ -373,7 +373,7 @@
 .match__why {
   font-family: var(--ff-data); font-size: var(--fs-micro);
   letter-spacing: 0.06em; text-transform: uppercase;
-  color: var(--accent); line-height: 1.6;
+  color: var(--accent-text); line-height: 1.6;
 }
 .match__score {
   font-family: var(--ff-display); font-weight: 700;
@@ -419,7 +419,7 @@
 .callout { max-width: 46ch; min-width: 0; display: grid; gap: var(--s-2); min-height: 132px; }
 .callout__q {
   font-family: var(--ff-data); font-size: var(--fs-micro);
-  letter-spacing: var(--tr-micro); text-transform: uppercase; color: var(--accent);
+  letter-spacing: var(--tr-micro); text-transform: uppercase; color: var(--accent-text);
 }
 .callout__title {
   font-family: var(--ff-display); font-size: clamp(1.25rem, 2.2vw, 1.75rem);
@@ -488,7 +488,7 @@
   font-variant-numeric: tabular-nums;
   display: flex; align-items: baseline; gap: 4px; flex-wrap: wrap;
 }
-.cmp-strip__value.is-best { color: var(--accent); }
+.cmp-strip__value.is-best { color: var(--accent-text); }
 .cmp-strip__value .metric__unit { font-size: 0.6875rem; }
 
 .cmp-slot {
@@ -550,7 +550,7 @@
 .service:hover { background: var(--raise); }
 .service__idx {
   font-family: var(--ff-data); font-size: var(--fs-micro);
-  letter-spacing: var(--tr-micro); color: var(--accent);
+  letter-spacing: var(--tr-micro); color: var(--accent-text);
 }
 .service__name {
   font-family: var(--ff-display); font-size: 1.25rem; font-weight: 600;

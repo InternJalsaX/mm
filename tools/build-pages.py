@@ -126,7 +126,7 @@ SHELL = """<!DOCTYPE html>
           {logo}
           MM Motors
         </a>
-        <p style="font-size:var(--fs-small);max-width:34ch;color:var(--steel)">
+        <p style="font-size:var(--fs-small);max-width:34ch;color:var(--fg-faint)">
           A multi-brand two-wheeler showroom. Discover, compare and ride before
           you decide.
         </p>
@@ -137,7 +137,7 @@ SHELL = """<!DOCTYPE html>
       </div>
 
       <div class="ftr__col">
-        <h4>Brands</h4>
+        <h2>Brands</h2>
         <ul>
 {footer_brands}
           <li><a href="models.html?fuel=petrol">All petrol</a></li>
@@ -146,7 +146,7 @@ SHELL = """<!DOCTYPE html>
       </div>
 
       <div class="ftr__col">
-        <h4>Decide</h4>
+        <h2>Decide</h2>
         <ul>
           <li><a href="finder.html">Find your ride</a></li>
           <li><a href="compare.html">Compare models</a></li>
@@ -156,7 +156,7 @@ SHELL = """<!DOCTYPE html>
       </div>
 
       <div class="ftr__col">
-        <h4>Talk to us</h4>
+        <h2>Talk to us</h2>
         <ul>
           <li><a data-dealer="phone" href="#"></a></li>
           <li><a data-dealer="email" href="#"></a></li>
@@ -708,19 +708,19 @@ BODY_FINDER = """
     </header>
     <div class="own-grid">
       <div class="own-card" data-reveal>
-        <h4>Can you flat-foot it?</h4>
+        <h3>Can you flat-foot it?</h3>
         <p>Seat height is published, but whether it suits your inseam is something you find out in ten seconds in the showroom.</p>
       </div>
       <div class="own-card" data-reveal>
-        <h4>Will an EV work for you?</h4>
+        <h3>Will an EV work for you?</h3>
         <p>It depends entirely on where you park overnight. If you cannot run a cable to it, range is the wrong thing to be comparing.</p>
       </div>
       <div class="own-card" data-reveal>
-        <h4>Does the boot fit your helmet?</h4>
+        <h3>Does the boot fit your helmet?</h3>
         <p>Litres are litres, but helmet shapes differ. Bring yours and we will try it in the underseat storage.</p>
       </div>
       <div class="own-card" data-reveal>
-        <h4>What will it really cost?</h4>
+        <h3>What will it really cost?</h3>
         <p>Every price on this site is ex-showroom. On-road depends on registration, insurance and accessories — ask us for the real number.</p>
       </div>
     </div>

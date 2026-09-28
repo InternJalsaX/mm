@@ -22,6 +22,10 @@
   /* ---- Signature accent — ELECTRIC ORANGE ------------------------------- */
   --accent:        #FF4B12;
   --accent-deep:   #D63A08;
+  --accent-press:  #A72D06;
+  /* Accent as TEXT. On dark the brand orange clears 4.5:1; on paper it only
+     reaches 2.95:1, so .on-light overrides it. Fills keep --accent. */
+  --accent-text:   var(--accent);
   --accent-soft:   rgba(255, 75, 18, 0.12);
   --accent-line:   rgba(255, 75, 18, 0.34);
 
@@ -29,7 +33,7 @@
   --surface:       var(--ink);
   --fg:            var(--paper);
   --fg-dim:        var(--mist);
-  --fg-faint:      var(--steel);
+  --fg-faint:      #898E96;
   --line:          var(--graphite-line);
   --raise:         var(--ink-raise);
 
@@ -102,7 +106,7 @@
   --surface: var(--ink);
   --fg:      var(--paper);
   --fg-dim:  var(--mist);
-  --fg-faint: var(--steel);
+  --fg-faint: #898E96;
   --line:    var(--graphite-line);
   --raise:   var(--ink-raise);
   background: var(--surface);
@@ -113,7 +117,7 @@
   --surface: var(--graphite);
   --fg:      var(--paper);
   --fg-dim:  var(--mist);
-  --fg-faint: var(--steel);
+  --fg-faint: #898E96;
   --line:    var(--graphite-2);
   --raise:   var(--graphite-2);
   background: var(--surface);
@@ -124,7 +128,8 @@
   --surface: var(--paper);
   --fg:      var(--ink);
   --fg-dim:  #4A4F56;
-  --fg-faint: #8A8880;
+  --fg-faint: #6E6C65;
+  --accent-text: #CC3100;
   --line:    var(--paper-line);
   --raise:   var(--paper-raise);
   background: var(--surface);

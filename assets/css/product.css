@@ -70,7 +70,7 @@
 .p-sec__label { display: grid; gap: var(--s-2); align-content: start; }
 .p-sec__idx {
   font-family: var(--ff-data); font-size: var(--fs-micro);
-  letter-spacing: var(--tr-micro); color: var(--accent);
+  letter-spacing: var(--tr-micro); color: var(--accent-text);
 }
 .p-sec__title {
   font-family: var(--ff-display); font-size: 1.125rem; font-weight: 600;
@@ -106,7 +106,7 @@
   padding: 6px 0;
   transition: color var(--t-fast) linear;
 }
-.p-nav a:hover, .p-nav a.is-active { color: var(--accent); }
+.p-nav a:hover, .p-nav a.is-active { color: var(--accent-text); }
 
 /* --------------------------------------------------------------------------
    COLOURS & VARIANTS
@@ -145,10 +145,10 @@
   border-radius: var(--r-sm);
   display: grid; gap: var(--s-3); align-content: start;
 }
-.own-card h4 {
+.own-card h3 {
   font-family: var(--ff-data); font-size: var(--fs-micro);
   letter-spacing: var(--tr-micro); text-transform: uppercase;
-  color: var(--accent); font-weight: 600; margin: 0;
+  color: var(--accent-text); font-weight: 600; margin: 0;
 }
 .own-card p { font-size: var(--fs-small); color: var(--fg-dim); }
 
@@ -168,7 +168,7 @@
   font-family: var(--ff-display); font-weight: 700;
   font-size: clamp(1.75rem, 3.4vw, 2.5rem); line-height: 1;
   letter-spacing: -0.03em; font-variant-numeric: tabular-nums;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .emi__ctrl-value {
   font-family: var(--ff-display); font-weight: 600; font-size: 1.0625rem;
@@ -247,7 +247,7 @@
   transition: border-color var(--t-fast) linear, background var(--t-fast) linear;
 }
 .cmp-pick:hover { border-color: var(--fg-faint); }
-.cmp-pick[aria-pressed='true'] { border-color: var(--accent); background: var(--accent-soft); }
+.cmp-pick[aria-pressed='true'] { border-color: var(--accent-text); background: var(--accent-soft); }
 .cmp-pick .v-media { aspect-ratio: 16 / 11; }
 .cmp-pick__name { font-family: var(--ff-display); font-weight: 600; font-size: 0.9375rem; line-height: 1.2; }
 
@@ -268,7 +268,7 @@
 
 .steps-list { display: grid; gap: var(--s-4); }
 .steps-list li { display: grid; grid-template-columns: auto 1fr; gap: var(--s-4); align-items: baseline; }
-.steps-list .micro { color: var(--accent); }
+.steps-list .micro { color: var(--accent-text); }
 
 .confirm {
   border: var(--hair) solid var(--accent);
@@ -292,4 +292,4 @@
   border-bottom: var(--hair) solid var(--line);
   font-size: var(--fs-small);
 }
-.svc__list .micro { color: var(--accent); }
+.svc__list .micro { color: var(--accent-text); }
