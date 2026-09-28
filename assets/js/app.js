@@ -6,6 +6,7 @@
 
 import { initReveals, initCounters } from './motion.js';
 import { initMedia } from './art.js';
+import { initBrowse } from './browse.js';
 import * as garage from './garage.js';
 import { DEALER } from './data/vehicles.js';
 
@@ -61,7 +62,13 @@ function initDealerDetails() {
   document.querySelectorAll('[data-dealer]').forEach((el) => {
     const key = el.dataset.dealer;
     const value = DEALER[key];
-    if (value == null) return;
+    /* A detail we do not have is removed, not left blank. Returning early
+       used to leave an empty <a> sitting in the footer list. */
+    if (value == null) {
+      const row = el.closest('li');
+      (row || el).remove();
+      return;
+    }
     if (el.tagName === 'A' && key === 'phone') el.href = `tel:${value.replace(/\s/g, '')}`;
     if (el.tagName === 'A' && key === 'email') el.href = `mailto:${value}`;
     el.textContent = value;
@@ -128,6 +135,7 @@ async function boot() {
 
   // Run after page render so freshly injected content is included
   initMedia();
+  initBrowse();
   initReveals();
   initCounters();
   garage.syncToggles();
@@ -142,6 +150,7 @@ if (document.readyState === 'loading') {
 /* Re-scan after any page module injects content asynchronously */
 export function rescan(root = document) {
   initMedia(root);
+  initBrowse(root);
   initReveals(root);
   initCounters(root);
   garage.syncToggles(root);

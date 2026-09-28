@@ -4,7 +4,9 @@
    Filter state lives in the URL, so a filtered view is a shareable link.
    ========================================================================== */
 
-import { VEHICLES, BRANDS, PRIORITIES, BUDGETS } from '../data/vehicles.js';
+import {
+  VEHICLES, BRANDS, PRIORITIES, BUDGETS, DISPLACEMENTS,
+} from '../data/vehicles.js';
 import { vCard, rail, esc, ICON } from '../ui.js';
 
 const FUELS = [
@@ -17,7 +19,13 @@ const TYPES = [
   { id: 'moped', label: 'Moped' },
 ];
 
-const state = { fuel: null, brand: null, type: null, priority: [], budget: null, sort: 'price-asc' };
+/* One definition of "no filters", so Clear cannot fall behind the facet list.
+   Both reset paths spread this; adding a facet here is the only edit needed. */
+const CLEARED = Object.freeze({
+  fuel: null, brand: null, type: null, priority: [], budget: null, cc: null,
+});
+
+const state = { ...CLEARED, priority: [], sort: 'price-asc' };
 
 /* -------------------------------------------------------------------------- */
 function readURL() {
@@ -26,6 +34,7 @@ function readURL() {
   state.brand = q.get('brand');
   state.type = q.get('type');
   state.budget = q.get('budget');
+  state.cc = q.get('cc');
   state.priority = (q.get('priority') || '').split(',').filter(Boolean);
   state.sort = q.get('sort') || 'price-asc';
 }
@@ -36,6 +45,7 @@ function writeURL() {
   if (state.brand) q.set('brand', state.brand);
   if (state.type) q.set('type', state.type);
   if (state.budget) q.set('budget', state.budget);
+  if (state.cc) q.set('cc', state.cc);
   if (state.priority.length) q.set('priority', state.priority.join(','));
   if (state.sort !== 'price-asc') q.set('sort', state.sort);
   const qs = q.toString();
@@ -60,6 +70,14 @@ function results() {
     if (state.brand && v.brand !== state.brand) return false;
     if (state.type && v.type !== state.type) return false;
     if (v.price.from > budgetMax) return false;
+    if (state.cc) {
+      const band = DISPLACEMENTS.find((d) => d.id === state.cc);
+      const cc = numOf(v, /Engine/);
+      // No cc at all means electric: excluded from a displacement band
+      // rather than treated as 0 cc, which would put every EV in the
+      // smallest band and read as a specification claim.
+      if (!band || cc == null || cc <= band.min || cc > band.max) return false;
+    }
     if (state.priority.length && !state.priority.some((p) => v.match.priority.includes(p)))
       return false;
     return true;
@@ -118,6 +136,13 @@ function filters() {
         ${TYPES.filter((t) => counts((v) => v.type === t.id))
           .map((t) => chip('type', t.id, t.label, state.type === t.id))
           .join('')}
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <p class="filter-group__title">Displacement</p>
+      <div class="filter-group__opts">
+        ${DISPLACEMENTS.map((d) => chip('cc', d.id, d.label, state.cc === d.id)).join('')}
       </div>
     </div>
 
@@ -234,7 +259,7 @@ export function init() {
 
   document.getElementById('filters').addEventListener('click', (e) => {
     if (e.target.closest('[data-f-reset]')) {
-      Object.assign(state, { fuel: null, brand: null, type: null, priority: [], budget: null });
+      Object.assign(state, { ...CLEARED, priority: [] });
       writeURL();
       heading();
       filters();
@@ -268,7 +293,7 @@ export function init() {
   // Reset buttons can also live inside the empty state
   document.getElementById('browse-grid').addEventListener('click', (e) => {
     if (!e.target.closest('[data-f-reset]')) return;
-    Object.assign(state, { fuel: null, brand: null, type: null, priority: [], budget: null });
+    Object.assign(state, { ...CLEARED, priority: [] });
     writeURL();
     heading();
     filters();

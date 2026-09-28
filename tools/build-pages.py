@@ -327,6 +327,183 @@ def hero_title() -> str:
     return "\n          ".join(lines)
 
 
+def _vehicle_chunks() -> list[str]:
+    """One text chunk per vehicle, so per-vehicle figures can be read off."""
+    src = (ROOT / "assets" / "js" / "data" / "vehicles.js").read_text(encoding="utf-8")
+    block = src[src.index("export const VEHICLES"):]
+    return re.split(r"\n  \{\n", block)[1:]
+
+
+def _bands(name: str) -> list[tuple[str, str, float, float]]:
+    """Read a band table (DISPLACEMENTS / BUDGETS) out of the data module."""
+    src = (ROOT / "assets" / "js" / "data" / "vehicles.js").read_text(encoding="utf-8")
+    block = src[src.index("export const " + name + " = ["):]
+    block = block[: block.index("];")]
+    out = []
+    for m in re.finditer(
+        # Whitespace in the band tables is aligned for reading, so every gap
+        # here has to be \s* rather than a single space.
+        r"id: '(\w+)',\s*label: '([^']+)',\s*(?:min:\s*([\d.]+),\s*)?max:\s*([\w.]+)",
+        block,
+    ):
+        bid, label, lo, hi = m.groups()
+        out.append((bid, label, float(lo or 0), float("inf") if hi == "Infinity" else float(hi)))
+    return out
+
+
+def body_counts() -> list[tuple[str, str, int]]:
+    found = [re.search(r"type: '([\w-]+)'", c) for c in _vehicle_chunks()]
+    types = [m.group(1) for m in found if m]
+    seen: list[str] = []
+    for tid in types:
+        if tid not in seen:
+            seen.append(tid)
+    return [(tid, tid.capitalize(), types.count(tid)) for tid in seen]
+
+
+def cc_counts() -> list[tuple[str, str, str, int]]:
+    ccs = []
+    for c in _vehicle_chunks():
+        m = re.search(r"label: 'Engine', value: '([\d.]+)'", c)
+        ccs.append(float(m.group(1)) if m else None)   # None = electric, no cc
+    out = []
+    for bid, label, lo, hi in _bands("DISPLACEMENTS"):
+        n = sum(1 for v in ccs if v is not None and lo < v <= hi)
+        short = label.replace(" cc", "").replace("Up to ", "\u2264").replace("Above ", ">")
+        out.append((bid, label, short, n))
+    return out
+
+
+def budget_counts() -> list[tuple[str, str, str, int]]:
+    prices = []
+    for c in _vehicle_chunks():
+        m = re.search(r"price: \{ from: (\d+)", c)
+        if m:
+            prices.append(int(m.group(1)))
+    out = []
+    for bid, label, _lo, hi in _bands("BUDGETS"):
+        n = sum(1 for v in prices if v <= hi)
+        short = label.replace("\u20b9", "").replace(",000", "k")
+        out.append((bid, label, short, n))
+    return out
+
+
+# ==========================================================================
+# BROWSE GRID
+# ==========================================================================
+
+LOGO_DIR = ROOT / "assets" / "img" / "brands"
+
+
+def brand_logo(bid: str) -> str | None:
+    """Return a web path to this brand's logo, or None if none is on disk.
+
+    Detection is by file existence rather than a data field, so dropping
+    assets/img/brands/tvs.svg in is the whole job. Manufacturer marks are
+    third-party trademarks and have to come from the brand pack, so until
+    they do the tile falls back to a wordmark.
+    """
+    for ext in ("svg", "png", "webp"):
+        if (LOGO_DIR / (bid + "." + ext)).exists():
+            return "assets/img/brands/" + bid + "." + ext
+    return None
+
+
+def _plural(n: int) -> str:
+    return str(n) + (" model" if n == 1 else " models")
+
+
+def tile(href: str, mark_html: str, name: str, meta: str) -> str:
+    name_html = '<span class="tile__name">' + name + "</span>" if name else ""
+    meta_html = '<span class="tile__meta">' + meta + "</span>" if meta else ""
+    return (
+        '<li class="tile-item">'
+        '<a class="tile" href="' + href + '">'
+        '<span class="tile__mark">' + mark_html + "</span>"
+        + name_html
+        + meta_html
+        + "</a></li>"
+    )
+
+
+def _word(text: str) -> str:
+    return '<span class="tile__word">' + text + "</span>"
+
+
+def browse_block() -> str:
+    """Browse by brand / body / displacement / budget.
+
+    Generated at build time from the same data the pages derive their counts
+    from, so a brand or a band cannot go stale here. Every tile links to a
+    filter that already exists: brand.html?b=, models.html?type=, ?cc=, ?budget=.
+    """
+    brands = []
+    for bid, name, count in brand_counts():
+        logo = brand_logo(bid)
+        if logo:
+            # Real mark: alt is empty because the visible name below is the
+            # accessible label, so a screen reader is not told it twice.
+            mark = ('<img src="' + logo + '" alt="" width="120" height="48" '
+                    'loading="lazy" decoding="async">')
+            label = name
+        else:
+            # Wordmark fallback already states the name; repeating it under
+            # the mark reads as "TVS / TVS / 7 models".
+            mark = _word(name)
+            label = ""
+        brands.append(tile("brand.html?b=" + bid, mark, label, _plural(count)))
+
+    bodies = [
+        tile("models.html?type=" + tid, _word(label), label, _plural(n))
+        for tid, label, n in body_counts()
+    ]
+    ccs = [
+        tile("models.html?cc=" + cid, _word(short), label, _plural(n))
+        for cid, label, short, n in cc_counts()
+    ]
+    # No count on the budget tiles. BUDGETS carries only a max, so the filter
+    # means "at or under this price" while the labels read like bands -- the
+    # counts come out cumulative (4, 10, 14, 18) and a "10" next to
+    # "80,000 - 1,00,000" would be read as the size of that band. The label
+    # alone is honest; the number would not be.
+    budgets = [
+        tile("models.html?budget=" + bid, _word(short), label, "")
+        for bid, label, short, _n in budget_counts()
+    ]
+
+    panels = (
+        ("brand", "Brand", brands),
+        ("body", "Body style", bodies),
+        ("cc", "Displacement", ccs),
+        ("budget", "Budget", budgets),
+    )
+
+    tabs = []
+    bodies_html = []
+    for i, (key, label, items) in enumerate(panels):
+        first = i == 0
+        tabs.append(
+            '<button class="browse__tab" type="button" role="tab" id="bt-' + key + '"'
+            ' aria-controls="bp-' + key + '"'
+            ' aria-selected="' + ("true" if first else "false") + '"'
+            ' tabindex="' + ("0" if first else "-1") + '">' + label + "</button>"
+        )
+        bodies_html.append(
+            '<div class="browse__panel" id="bp-' + key + '" role="tabpanel"'
+            ' aria-labelledby="bt-' + key + '"' + ("" if first else " hidden") + ">"
+            '<ul class="tile-grid">' + "".join(items) + "</ul></div>"
+        )
+
+    return (
+        '<div class="browse" data-browse data-reveal="fade">'
+        '<div class="browse__tabs" role="tablist" aria-label="Browse bikes by">'
+        + "".join(tabs)
+        + "</div>"
+        + "".join(bodies_html)
+        + "</div>"
+    )
+
+
 # ==========================================================================
 # PAGE BODIES
 # ==========================================================================
@@ -381,14 +558,19 @@ BODY_INDEX = """
       <header class="sec-head">
         <div>
           <p class="eyebrow" data-index="02" data-reveal="fade">The floor</p>
-          <h2 class="h2" data-reveal>Five manufacturers.<br>Pick a doorway.</h2>
+          <h2 class="h2" data-reveal>Browse bikes by</h2>
         </div>
         <p class="body-dim" data-reveal="fade" style="max-width:36ch;font-size:var(--fs-small)">
-          This page shows you who MM Motors represents — not a product grid.
-          Open a manufacturer and you get its models, grouped and specified.
+          Four ways in: by the manufacturer, by what you want to sit on, by
+          engine size, or by what you have to spend. Every route lands on the
+          same eighteen machines, specified the same way.
         </p>
       </header>
     </div>
+    <div class="wrap">{browse}</div>
+
+    <!-- The grid is the fast route in; these rows are the editorial one,
+         one manufacturer at a time with its statement and its lead machine. -->
     <div class="brand-index" id="brand-index" data-reveal="fade"></div>
   </section>
 
@@ -1039,6 +1221,7 @@ def build() -> None:
             ("{hero_lede}", hero_lede()),
             ("{hero_stats}", hero_stats()),
             ("{hero_title}", hero_title()),
+            ("{browse}", browse_block()),
             ("{count_models}", str(counts()["models"])),
             ("{count_brands}", in_words(counts()["brands"])),
         ):

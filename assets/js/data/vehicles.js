@@ -16,12 +16,18 @@
 
 export const DEALER = {
   name: 'MM Motors',
-  city: 'Bengaluru',
-  phone: '+91 00000 00000',
-  whatsapp: '910000000000',
-  email: 'hello@mmmotors.example',
+  city: 'Rampally, Medchal–Malkajgiri',
+  phone: '+91 78939 66616',
+  whatsapp: '917893966616',
+  /* No email is published on the showroom signage. null rather than a
+     placeholder: renderDealer() drops a detail that is null, so nothing
+     invented is shown and the row simply does not appear. */
+  email: null,
+  /* Not on the signage either — confirm before publishing. */
   hours: 'Mon–Sat 09:30–19:30 · Sun 10:00–17:00',
-  address: 'Service Road, Bengaluru — update with the real showroom address',
+  address:
+    '# 10-20/19/1/A/1, Plot No. 19, Sripuram Housing Colony, '
+    + 'RL Nagar, Rampally, Medchal–Malkajgiri Dist. – 501 301',
 };
 
 export const BRANDS = {
@@ -1322,6 +1328,15 @@ export const PRIORITIES = [
   { id: 'storage', label: 'Storage' },
   { id: 'tech', label: 'Technology' },
   { id: 'running-cost', label: 'Running cost' },
+];
+
+/* Displacement bands. Electric models carry no cc figure at all, so a cc
+   filter excludes them rather than inventing a zero -- see models.js. */
+export const DISPLACEMENTS = [
+  { id: 'd1', label: 'Up to 110 cc',  min: 0,   max: 110 },
+  { id: 'd2', label: '110 – 125 cc',  min: 110, max: 125 },
+  { id: 'd3', label: '125 – 200 cc',  min: 125, max: 200 },
+  { id: 'd4', label: 'Above 200 cc',  min: 200, max: Infinity },
 ];
 
 export const BUDGETS = [

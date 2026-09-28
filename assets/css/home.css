@@ -155,10 +155,11 @@
   border-bottom: var(--hair) solid var(--line);
   padding-block: clamp(20px, 2.6vw, 36px);
   overflow: hidden;
-  transition: background-color var(--t-base) var(--e-out);
 }
-.brand-row:hover,
-.brand-row:focus-visible { background: var(--ink-raise); }
+/* No colour change on hover. This used to fill the row with --ink-raise
+   (#111215), which was the dark theme's raised surface -- on white it turned
+   the row black underneath black type. The accent hairline in ::before is
+   the affordance, and it does not touch the row's own colours. */
 .brand-row:focus-visible { outline-offset: -3px; }
 
 /* The accent hairline that marks the row you are on */
@@ -568,4 +569,122 @@
 }
 @media (min-width: 900px) {
   .band { grid-template-columns: 1fr 1fr; gap: var(--s-9); align-items: end; }
+}
+
+/* ==========================================================================
+   BROWSE BY — tabs over a grid of tiles
+   One bordered block, hairline rules between cells, so it reads as a single
+   object rather than ten floating cards.
+   ========================================================================== */
+
+.browse {
+  border: var(--hair) solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--card);
+  overflow: hidden;
+}
+
+.browse__tabs {
+  display: flex;
+  gap: var(--s-5);
+  padding: 0 var(--s-5);
+  border-bottom: var(--hair) solid var(--line);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.browse__tabs::-webkit-scrollbar { display: none; }
+
+.browse__tab {
+  appearance: none;
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  padding: var(--s-4) 2px;
+  min-height: 44px;
+  font-family: var(--ff-data);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tr-micro);
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--fg-faint);
+  cursor: pointer;
+  transition: color var(--t-fast) linear, border-color var(--t-fast) linear;
+}
+.browse__tab:hover { color: var(--fg); }
+.browse__tab[aria-selected='true'] {
+  color: var(--accent-text);
+  border-bottom-color: var(--accent);
+}
+
+/* Hairline grid: each cell draws its own right/bottom rule, and negative
+   margins on the list clip the outermost ones so the block stays flush. */
+.tile-grid {
+  list-style: none;
+  margin: 0 0 -1px -1px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+@media (max-width: 1000px) { .tile-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 600px)  { .tile-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.tile-item {
+  border-left: var(--hair) solid var(--line);
+  border-bottom: var(--hair) solid var(--line);
+  min-width: 0;
+}
+
+.tile {
+  display: grid;
+  gap: var(--s-3);
+  justify-items: center;
+  align-content: center;
+  padding: var(--s-5) var(--s-4);
+  min-height: 132px;
+  text-decoration: none;
+  color: var(--fg);
+  transition: background var(--t-fast) linear;
+}
+.tile:hover { background: var(--cream); }
+
+/* The mark sits on white regardless of the tile state, because a printed
+   manufacturer logo is supplied for a white ground and tinting it is not
+   ours to do. */
+.tile__mark {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  max-width: 132px;
+  aspect-ratio: 5 / 2;
+  background: #fff;
+  border: var(--hair) solid var(--paper-line-2);
+  border-radius: var(--r-sm);
+  overflow: hidden;
+}
+.tile__mark img { width: 84%; height: 74%; object-fit: contain; }
+
+/* Until a logo file exists, the tile carries the name as a wordmark. */
+.tile__word {
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: clamp(0.82rem, 1.5vw, 1.02rem);
+  letter-spacing: -0.01em;
+  line-height: 1;
+  text-align: center;
+  color: var(--charcoal);
+  padding-inline: 8px;
+}
+
+.tile__name {
+  font-size: var(--fs-small);
+  font-weight: 500;
+  text-align: center;
+}
+.tile__meta {
+  font-family: var(--ff-data);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tr-micro);
+  text-transform: uppercase;
+  color: var(--fg-faint);
 }
